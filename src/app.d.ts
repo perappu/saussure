@@ -7,7 +7,15 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
+
+		interface Settings {
+			'THEME' : string;
+			'BACKEND' : string;
+			'TOKEN' : string;
+			'REPO_NAME' : string;
+			'BRANCH' : string = 'main';
+		}
 	}
+	
 }
 
-export {};
