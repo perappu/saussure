@@ -12,10 +12,13 @@
     import { settings } from "$lib/config";
     import Aceeditor from "../aceeditor/aceeditor.svelte";
     import { m } from "$lib/paraglide/messages";
+	import StarterKit from "@tiptap/starter-kit";
 
-	let { contents, selectedTab } = $props();
+	let { contents, selectedTab, onfocusout = null } = $props();
 
-	let tiptapEditor: Editor | undefined = $state();
+	let tiptapEditor: Editor = $state(new Editor({
+		extensions: [StarterKit]
+	}));
 
 	textValue.set(contents);
 
@@ -32,6 +35,7 @@
 	function onupdate() {
 		textValue.set(prettify(tiptapEditor?.getHTML() ?? contents));
 	}
+
 </script>
 
 {#if $settings.WYSIWYG === 'enabled'}
@@ -47,8 +51,12 @@
 </div>
 {/if}
 
+<div {onfocusout}>
+
 {#if $settings.WYSIWYG === 'disabled' || selectedTab === "ace"}
 	<Aceeditor contents={$textValue}/>
 {:else}
-	<Tipex body={$textValue} focal controls floating bind:tipex={tiptapEditor} {onupdate}/>
+	<Tipex body={$textValue} focal controls bind:tipex={tiptapEditor} {onupdate} />
 {/if}
+
+</div>

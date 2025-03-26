@@ -1,23 +1,18 @@
-import { characters, fetchCharacters } from '$lib/data/characters.svelte';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
+import { fetchCharacterLayout } from '$lib/frontends/layouts.svelte';
 
-export const load: PageLoad = async ({ params }) => {
+export const load: PageLoad = async ({ params, parent }) => {
+
+    const { characters } = await parent();
+
+    //get the character
     let character;
-
-    //because i guess it won't load the characters if we refresh on a specific character's page
-    if(!characters) {
-        let chars = await fetchCharacters();
-        if(chars) {
-            character = (chars).find((c) => c.filename === params.slug);
-        } else {
-            throw new Error("Could not fetch characters from edit page", { cause: ex });
-        }
-    } else {
-        character = (characters).find((c) => c.filename === params.slug);
-    }
-
+    character = characters!.find((c) => c.filename === params.slug);
     if (!character) error(404, "Character could not be found.");
 
-    return character;
+    //get the HTML layout for rendering live previews
+    let layouts = await fetchCharacterLayout();
+
+    return { character: character, layouts: layouts };
 };

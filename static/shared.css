@@ -4,7 +4,7 @@ html {
 }
 
 body {
-    max-width: 900px;
+    max-width: 100% !important;
 }
 
 header {
@@ -32,4 +32,11 @@ header ul li {
 
 .form-group input, .form-group select, .form-group button {
     margin-right: 0px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
 }

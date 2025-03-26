@@ -42,12 +42,6 @@
     {/if}
 </main>
 
-<footer style="text-align: center;">
+<footer style="text-align: center; margin: 10px;">
     <Locale />
 </footer>
-
-<div style="display:none">
-{#each locales as locale}
-<a href={localizeHref(page.url.pathname, { locale })}>{locale}</a>
-{/each}
-</div>

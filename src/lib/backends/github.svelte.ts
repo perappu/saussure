@@ -86,6 +86,31 @@ export const downloadFileGithub = async (path: string) => {
 }
 
 /**
+ * Download all files in a directory using the Github backend
+ * 
+ * @returns JSON api response
+ */
+export const downloadFilesGithub = async (path: string) => {
+
+    var query = `query {
+                    repository(name: "` + get(settings).REPO_NAME + `", owner: "` + get(settings).OWNER_NAME + `" ) {
+                        object(expression: "` + get(settings).BRANCH + `:` + path + `") {
+                        ... on Tree {
+                          entries {
+                            name
+                            object {
+                              ... on Blob {
+                                text
+                              }}}}}}}`;
+
+    return await makeGraphQLRequest(getBaseUrl(true),
+    {
+        'Authorization': `token ` + get(settings).TOKEN,
+        'Content-Type': 'application/json'
+    }, query);
+}
+
+/**
  * Put a file using the Github backend
  * 
  * @returns JSON api response

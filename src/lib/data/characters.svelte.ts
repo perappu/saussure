@@ -5,8 +5,6 @@ import { fetchCharactersGithub, putFileGithub } from "$lib/backends/github.svelt
 import { settings } from "$lib/config";
 import { m } from "$lib/paraglide/messages";
 
-export var characters: any[];
-
 /**
  * Fetch characters based on the user's backend settings
  * 
@@ -42,7 +40,7 @@ export const writeCharacter = async (filename: string, formData: FormData) => {
     }
 
     //use matter to put the description and front matter into a nice MD file format
-    var blob = matter.stringify(data.description, {
+    var blob = matter.stringify(data.content, {
         name: data.name,
         tags: data.tags,
         folder: data.folder ?? null,
@@ -59,7 +57,7 @@ export const writeCharacter = async (filename: string, formData: FormData) => {
 
     //call putFile function based on configured backend
     if(get(settings).BACKEND === 'github') {
-        return await putFileGithub(getCharacterDirectory() + filename, body);
+        return await putFileGithub(getCharacterDirectory() + "/" + filename, body);
     } else if(get(settings).BACKEND === 'forgejo') {
         //TODO
     } else {

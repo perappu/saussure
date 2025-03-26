@@ -27,8 +27,12 @@ export function getBaseUrl(graphQL: boolean = false) {
 export function getCharacterDirectory() {
 
     if(get(settings).FRONTEND == 'custom') {
-        return get(settings).CHARACTER_DIRECTORY;
+        if(get(settings).CHARACTER_DIRECTORY) {
+            return get(settings).CHARACTER_DIRECTORY;
+        } else {
+            return '';
+        }
     } else if(get(settings).FRONTEND == '11ty') {
-        return 'content/characters/';
+        return 'content/characters';
     }
 }

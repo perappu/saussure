@@ -8,6 +8,7 @@
 	"literatures": "Literatures",
 	"settings": "Settings",
 	"loading" : "Loading",
+	"filename": "File Name",
 	"name": "Name",
 	"tags": "Tags",
 	"fields": "Fields",
@@ -26,5 +27,10 @@
 	"branch" : "Branch",
 	"frontend" : "Frontend",
 	"media_storage" : "Media Storage",
-	"save" : "Save"
+	"save" : "Save",
+	"back": "Back",
+	"add_new_character": "Add New Character",
+	"sort_alphabetical": "Sort Alphabetical",
+	"edit_character": "Edit Character",
+	"warn_enter_settings": "Please fill out your settings to get started!"
 }

@@ -30,4 +30,4 @@
 
 </script>
 
-<div id="aceeditor" style="width: 100%; min-height: 400px;" {onchange}>{snapshot(textValue)}</div>
+<div id="aceeditor" style="width: 100%; min-height: 400px;" {onchange} >{$textValue}</div>

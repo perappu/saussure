@@ -4,8 +4,6 @@
 	import type { PageProps } from './$types';
     import { m } from "$lib/paraglide/messages";
 
-	let { data }: PageProps = $props();
-
 	let changes = get(settings);
 
 	const onchange = () => {
@@ -13,6 +11,8 @@
 	}
 
 </script>
+
+<h2>{m.settings()}</h2>
 
 <div class="settings">
 
@@ -142,6 +142,16 @@
 		name="literature_directory"
 		autocomplete="off"
 		bind:value={$settings.LITERATURE_DIRECTORY}
+		{onchange}
+	/>
+</label>
+
+<label>
+	Layouts Directory:
+	<input
+		name="layouts_directory"
+		autocomplete="off"
+		bind:value={$settings.LAYOUT_DIRECTORY}
 		{onchange}
 	/>
 </label>
