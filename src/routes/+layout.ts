@@ -5,7 +5,7 @@ export const ssr = false;
 
 export const load: LayoutLoad = async () => {
 
-    if (JSON.parse(localStorage.getItem("SETTINGS")!).TOKEN) {
+    if (localStorage.getItem("SETTINGS") && JSON.parse(localStorage.getItem("SETTINGS")!).TOKEN) {
         return {
             characters: await fetchCharacters()
         };

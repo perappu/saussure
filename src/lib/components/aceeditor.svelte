@@ -1,10 +1,7 @@
 <script>
-// @ts-nocheck
-// this is because it has a crisis over ace-builds and i don't know why
-
-    import * as ace from "ace-builds/src-min/ace";
-    import * as dark from "ace-builds/src-min/theme-nord_dark";
-    import * as light from "ace-builds/src-min/theme-cloud9_day";
+    // just ignore this entire file
+    // ace editor is such a pain that we import it in app.html from the cdn
+    // like i spent hours on this it's not worth making TS happy with imports and packages and all that
     import { onMount } from "svelte";
     import { textValue } from "./texteditor";
     import { settings } from "$lib/settings/index.svelte";

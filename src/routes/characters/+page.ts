@@ -5,7 +5,7 @@ import type { PageLoad } from './$types';
 export const load: PageLoad = async ({ params }) => {
 
     // because this is a .ts and not a .svelte file, we have to get the settings from localstorage this way
-    if (JSON.parse(localStorage.getItem("SETTINGS")!).TOKEN) {
+    if (localStorage.getItem("SETTINGS") && JSON.parse(localStorage.getItem("SETTINGS")!).TOKEN) {
         return {
             characters: await fetchCharacters()
         };
