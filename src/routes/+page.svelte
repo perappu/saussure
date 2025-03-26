@@ -1,8 +1,6 @@
 <script lang="ts">
-	import type { PageProps } from './$types';
-
-	let { data }: PageProps = $props();
+    import { m } from '$lib/paraglide/messages';
 </script>
 
-<h1>Hello!</h1>
+<h1>{m.hello()}</h1>
 <p>Click one of the above tabs to get started.</p>

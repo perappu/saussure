@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { settings } from '$lib/settings/index.svelte';
+    import { settings } from "$lib/config";
     import { get } from 'svelte/store';
 	import type { PageProps } from './$types';
+    import { m } from "$lib/paraglide/messages";
 
 	let { data }: PageProps = $props();
 
@@ -16,19 +17,19 @@
 <div class="settings">
 
 <label>
-	Theme:
+	{m.theme()}:
 	<select 
 		name="theme"
 		autocomplete="off"
 		bind:value={$settings.THEME}
 		{onchange}>
-		<option value="light">Light</option>
-		<option value="dark">Dark</option>
+		<option value="light">{m.light()}</option>
+		<option value="dark">{m.dark()}</option>
 	  </select>
 </label>
 
 <label>
-	WYSIWYG Editor:
+	{m.wysiwyg_editor()}:
 	<select 
 		name="wysiwyg"
 		autocomplete="off"
@@ -42,7 +43,7 @@
 <hr>
 
 <label>
-	Backend:
+	{m.backend()}:
 	<select 
 		name="backend"
 		autocomplete="off"
@@ -54,7 +55,7 @@
 </label>
 
 <label>
-	API Token:
+	{m.api_token()}:
 	<input
 		name="token"
 		autocomplete="off"
@@ -64,7 +65,7 @@
 </label>
 
 <label>
-	Repo Name:
+	{m.repo_name()}:
 	<input
 		name="repo_name"
 		autocomplete="off"
@@ -74,7 +75,7 @@
 </label>
 
 <label>
-	Owner Name:
+	{m.owner_name()}:
 	<input
 		name="owner_name"
 		autocomplete="off"
@@ -84,7 +85,7 @@
 </label>
 
 <label>
-	Branch:
+	{m.branch()}:
 	<input
 		name="repo_name"
 		autocomplete="off"
@@ -96,7 +97,7 @@
 <hr>
 
 <label>
-	Frontend:
+	{m.frontend()}:
 	<select 
 		name="frontend"
 		autocomplete="off"
@@ -149,7 +150,7 @@
 <hr>
 
 <label>
-	Media Storage:
+	{m.media_storage()}:
 	<select 
 		name="media_storage"
 		autocomplete="off"

@@ -1,55 +1,39 @@
-import { downloadFile, makeRequest, putFile } from "./requests.svelte";
 import { getCharacterDirectory } from "$lib/config/directories";
 import matter from "gray-matter";
-import { settings } from "$lib/settings/index.svelte";
 import { get } from "svelte/store";
+import { fetchCharactersGithub, putFileGithub } from "$lib/backends/github.svelte";
+import { settings } from "$lib/config";
+import { m } from "$lib/paraglide/messages";
 
 export var characters: any[];
 
+/**
+ * Fetch characters based on the user's backend settings
+ * 
+ * @returns The fetched characters
+ */
 export const fetchCharacters = async () => {
-    try {
-        let request = await makeRequest(getCharacterDirectory(), 'GET');
-
-        var validFiles = request.map((file: any) => {
-            return file.name.endsWith(".md") ? file : null;
-        }).filter((file: any) => file !== null);
-
-        var chars = [];
-
-        for (const file of validFiles) {
-            let contents = await downloadFile(file.path);
-
-            let raw = contents['data']['repository']['object']['text'];
-            let parsed = matter(raw);
-
-            const {name, tags, folder, ...fields} = parsed.data;
-
-            chars.push({
-                name: name,
-                tags: tags,
-                folder: folder,
-                fields: fields,
-                filename: file.name,
-                contents: parsed.content,
-                sha: file.sha
-            });
-        }
-
-        //why is this necessary
-        characters = chars;
-        return characters;
-    } catch (ex: any) {
-        throw new Error("Couldn't fetch characters", { cause: ex });
+    if(get(settings).BACKEND === 'github') {
+        return await fetchCharactersGithub();
+    } else if(get(settings).BACKEND === 'forgejo') {
+        //TODO
+    } else {
+        return null;
     }
 }
 
-export const writeCharacter = async (filename: string, formData: any) => {
+/**
+ * Writes a character file via API based on the user's backend settings
+ * 
+ * @param filename The filename to write
+ * @param formData The FormData object pulled from the edit/create character page
+ * @returns The API response
+ */
+export const writeCharacter = async (filename: string, formData: FormData) => {
 
-    console.log(filename);
+    var data: any = Object.fromEntries(formData);
 
-    var data = Object.fromEntries(formData);
-
-    //squish the fields back together
+    //squish the key/value fields back together
     var keys = Object.keys(data).filter(v => v.startsWith('key'));
 
     var fields: any = {};
@@ -57,6 +41,7 @@ export const writeCharacter = async (filename: string, formData: any) => {
         fields[data['key'+i]] = data['value'+i];
     }
 
+    //use matter to put the description and front matter into a nice MD file format
     var blob = matter.stringify(data.description, {
         name: data.name,
         tags: data.tags,
@@ -64,12 +49,20 @@ export const writeCharacter = async (filename: string, formData: any) => {
         ...fields
     });
 
+    //create the body of the request
     var body = {
-        message: 'Update character data',
+        message: m.updated_file() + ' ' + filename,
         sha: data.sha,
         content: window.btoa(blob),
         branch: get(settings).BRANCH
     };
 
-    return await putFile(getCharacterDirectory() + filename, body);
+    //call putFile function based on configured backend
+    if(get(settings).BACKEND === 'github') {
+        return await putFileGithub(getCharacterDirectory() + filename, body);
+    } else if(get(settings).BACKEND === 'forgejo') {
+        //TODO
+    } else {
+        return null;
+    }
 }

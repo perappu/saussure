@@ -7,10 +7,11 @@
 	import "@friendofsvelte/tipex/styles/EditLink.css";
 	import "@friendofsvelte/tipex/styles/CodeBlock.css";
 	import "./texteditor.css";
-	import Aceeditor from "./aceeditor.svelte";
 	import { prettify } from "htmlfy";
     import { textValue } from "./texteditor";
-    import { settings } from "$lib/settings/index.svelte";
+    import { settings } from "$lib/config";
+    import Aceeditor from "../aceeditor/aceeditor.svelte";
+    import { m } from "$lib/paraglide/messages";
 
 	let { contents, selectedTab } = $props();
 
@@ -27,6 +28,10 @@
 		}
 		selectedTab = tabValue;
 	};
+
+	function onupdate() {
+		textValue.set(prettify(tiptapEditor?.getHTML() ?? contents));
+	}
 </script>
 
 {#if $settings.WYSIWYG === 'enabled'}
@@ -37,7 +42,7 @@
 	>
 	<button
 		class={selectedTab === "tiptap" ? "active" : ""}
-		onclick={changeTab("ace")}>code</button
+		onclick={changeTab("ace")}>{m.code()}</button
 	>
 </div>
 {/if}
@@ -45,5 +50,5 @@
 {#if $settings.WYSIWYG === 'disabled' || selectedTab === "ace"}
 	<Aceeditor contents={$textValue}/>
 {:else}
-	<Tipex body={$textValue} focal controls floating bind:tipex={tiptapEditor} />
+	<Tipex body={$textValue} focal controls floating bind:tipex={tiptapEditor} {onupdate}/>
 {/if}

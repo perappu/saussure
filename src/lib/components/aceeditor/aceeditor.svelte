@@ -1,15 +1,16 @@
 <script>
+    // @ts-nocheck
     // just ignore this entire file
     // ace editor is such a pain that we import it in app.html from the cdn
     // like i spent hours on this it's not worth making TS happy with imports and packages and all that
     import { onMount } from "svelte";
-    import { textValue } from "./texteditor";
-    import { settings } from "$lib/settings/index.svelte";
+    import { settings } from "$lib/config";
+    import { textValue } from "../texteditor/texteditor";
+    import { text } from "@sveltejs/kit";
 
     let { contents } = $props();
 
     var aceEditor;
-    var text = $textValue;
 
     //do it on mount so that the DOM #aceeditor loads first
     onMount(() => {
@@ -22,10 +23,11 @@
         }
     });
 
+    //update the store every time we change the value in the ace editor
     function onchange() {
         textValue.set(aceEditor.getValue());
     }
 
 </script>
 
-<div id="aceeditor" style="width: 100%; min-height: 400px;" {onchange}>{text}</div>
+<div id="aceeditor" style="width: 100%; min-height: 400px;" {onchange}>{snapshot(textValue)}</div>

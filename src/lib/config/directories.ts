@@ -1,6 +1,12 @@
-import { settings } from "$lib/settings/index.svelte";
+import { settings } from "$lib/config";
 import { get } from "svelte/store";
 
+/**
+ * Get the base URL for API requests based on the user's backend settings
+ * 
+ * @param graphQL if the URL should be the graphQL endpoint
+ * @returns The endpoint to use
+ */
 export function getBaseUrl(graphQL: boolean = false) {
     if(get(settings).BACKEND == 'github') {
         if(graphQL == true) {
@@ -13,6 +19,11 @@ export function getBaseUrl(graphQL: boolean = false) {
     }
 }
 
+/**
+ * Get the character directory based on the user's frontend settings
+ * 
+ * @returns The directory to use
+ */
 export function getCharacterDirectory() {
 
     if(get(settings).FRONTEND == 'custom') {

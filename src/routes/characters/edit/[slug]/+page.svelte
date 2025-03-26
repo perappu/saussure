@@ -1,53 +1,60 @@
 <script lang="ts">
 	import { TextEditor } from "$lib/components";
-    import { textValue } from "$lib/components/texteditor";
-    import { writeCharacter } from "$lib/data/characters.svelte";
+	import { textValue } from "$lib/components/texteditor/texteditor";
+	import { writeCharacter } from "$lib/data/characters.svelte";
+    import { m } from "$lib/paraglide/messages";
 	import type { PageProps } from "./$types";
 
 	let { data }: PageProps = $props();
-
-	let html;
 	let descriptionEditor: TextEditor | undefined;
 
 	async function submitCharacter() {
-		var formData = new FormData(document.querySelector("#characterEdit") as HTMLFormElement);
-		formData.append('description', $textValue)
+		var formData = new FormData(
+			document.querySelector("#characterEdit") as HTMLFormElement,
+		);
+		formData.append("description", $textValue);
 		var result = await writeCharacter(data.filename, formData);
+		//todo: give user feedback that the file has been saved
 	}
 </script>
 
-
 <form action="javascript:void(0);" id="characterEdit">
+	<input type="hidden" name="sha" value={data.sha} />
 
-<input type="hidden" name="sha" value={data.sha} />
-
-<div class="form-group">
-	Name:
-	<input name="name" autocomplete="off" value={data.name} />
-</div>
-
-<div class="form-group">
-	Tags:
-	<input name="tags" autocomplete="off" value={data.tags} />
-</div>
-
-Fields:
-{#each Object.keys(data.fields) as key, index}
 	<div class="form-group">
-		<div class="field">
-			<input name="key{index}" autocomplete="off" value={key} />
-			<input name="value{index}" autocomplete="off" value={data.fields[key]} />
-			<button>x</button>
-		</div>
+		{m.name()}:
+		<input name="name" autocomplete="off" value={data.name} />
 	</div>
-{/each}
-<button style="width: 100%">Add Field</button>
 
-Description:
-<TextEditor selectedTab="tiptap" contents={data.contents} bind:this={descriptionEditor} />
+	<div class="form-group">
+		{m.tags()}:
+		<input name="tags" autocomplete="off" value={data.tags} />
+	</div>
 
-<div style="text-align:right; margin: 5px;">
-	<button onclick={submitCharacter}>Save</button>
-</div>
+	{m.fields()}:
+	{#each Object.keys(data.fields) as key, index}
+		<div class="form-group">
+			<div class="field">
+				<input name="key{index}" autocomplete="off" value={key} />
+				<input
+					name="value{index}"
+					autocomplete="off"
+					value={data.fields[key]}
+				/>
+				<button>x</button>
+			</div>
+		</div>
+	{/each}
+	<button style="width: 100%">{m.add_field()}</button>
 
+	{m.description()}:
+	<TextEditor
+		selectedTab="tiptap"
+		contents={data.contents}
+		bind:this={descriptionEditor}
+	/>
+
+	<div style="text-align:right; margin: 5px;">
+		<button onclick={submitCharacter}>{m.save()}</button>
+	</div>
 </form>

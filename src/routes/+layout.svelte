@@ -1,7 +1,11 @@
 <script lang="ts">
-    import { settings } from "$lib/settings/index.svelte";
-    import { navigating } from "$app/state";
+    import { settings } from "$lib/config";
+    import { navigating, page } from "$app/state";
     import { get } from "svelte/store";
+    import { m } from "$lib/paraglide/messages";
+    import { locales, localizeHref } from '$lib/paraglide/runtime';
+    import { Locale } from "$lib/components";
+
     let { children } = $props();
 </script>
 
@@ -21,19 +25,29 @@
 
 <header>
     <nav>
-        <a href="/">Dashboard</a>
-        <a href="/characters">Characters</a>
-        <a href="/galleries">Galleries</a>
-        <a href="/images">Images</a>
-        <a href="/literatures">Literatures</a>
-        <a href="/settings">Settings</a>
+        <a href="/">{m.home()}</a>
+        <a href="/characters">{m.characters()}</a>
+        <a href="/galleries">{m.galleries()}</a>
+        <a href="/images">{m.images()}</a>
+        <a href="/literatures">{m.literatures()}</a>
+        <a href="/settings">{m.settings()}</a>
     </nav>
 </header>
 
 <main class="container">
     {#if navigating.to}
-        <div aria-busy="true">Loading...</div>
+        <div aria-busy="true">{m.loading()}...</div>
     {:else}
         {@render children()}
     {/if}
 </main>
+
+<footer style="text-align: center;">
+    <Locale />
+</footer>
+
+<div style="display:none">
+{#each locales as locale}
+<a href={localizeHref(page.url.pathname, { locale })}>{locale}</a>
+{/each}
+</div>

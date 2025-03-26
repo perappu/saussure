@@ -3,14 +3,16 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params }) => {
-
-    //because i guess it won't load the characters if we refresh on a specific character's page
     let character;
 
+    //because i guess it won't load the characters if we refresh on a specific character's page
     if(!characters) {
         let chars = await fetchCharacters();
-        console.log(chars);
-        character = (chars).find((c) => c.filename === params.slug);
+        if(chars) {
+            character = (chars).find((c) => c.filename === params.slug);
+        } else {
+            throw new Error("Could not fetch characters from edit page", { cause: ex });
+        }
     } else {
         character = (characters).find((c) => c.filename === params.slug);
     }
