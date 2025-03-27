@@ -18,11 +18,11 @@
 
 <header>
     <nav>
-        <a href="/">{m.home()}</a>
-        <a href="/characters">{m.characters()}</a>
-        <a href="/images">{m.images()}</a>
-        <a href="/literatures">{m.literatures()}</a>
-        <a href="/settings">{m.settings()}</a>
+        <a href="{process.env.BASE_PATH}">{m.home()}</a>
+        <a href="{process.env.BASE_PATH}/characters">{m.characters()}</a>
+        <a href="{process.env.BASE_PATH}/images">{m.images()}</a>
+        <a href="{process.env.BASE_PATH}/literatures">{m.literatures()}</a>
+        <a href="{process.env.BASE_PATH}/settings">{m.settings()}</a>
     </nav>
 </header>
 

@@ -51,7 +51,7 @@
         <hr>
     {/each}
     
-    <a href="/characters/create"><button style="width: 100%">{m.add_new_character()}</button></a>
+    <a href="{process.env.BASE_PATH}/characters/create"><button style="width: 100%">{m.add_new_character()}</button></a>
     {:else}
     {m.warn_enter_settings()}
 {/if}
