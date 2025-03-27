@@ -18,7 +18,7 @@
 
 <header>
     <nav>
-        <a href="{process.env.BASE_PATH}">{m.home()}</a>
+        <a href="{process.env.BASE_PATH}/">{m.home()}</a>
         <a href="{process.env.BASE_PATH}/characters">{m.characters()}</a>
         <a href="{process.env.BASE_PATH}/images">{m.images()}</a>
         <a href="{process.env.BASE_PATH}/literatures">{m.literatures()}</a>
