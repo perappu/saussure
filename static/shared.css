@@ -1,6 +1,12 @@
+:root {
+    --toastContainerTop: 1em;
+    --toastContainerLeft: calc(50vw - 8rem);
+  }
+
 html {
     --font-family: "Open Sans", sans-serif;
     font-family: var(--font-family);
+    background-color: var(--background-body);
 }
 
 body {
@@ -39,4 +45,16 @@ nav {
     justify-content: space-between;
     margin-bottom: 10px;
     padding: 10px;
+}
+
+.danger {
+    background-color: #542f2b;
+}
+
+.danger:hover {
+    background-color: #321a17;
+}
+
+.danger:focus {
+    box-shadow: 0 0 0 2px #773a33ab;
 }

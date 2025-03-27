@@ -3,6 +3,7 @@ import { settings } from "$lib/config";
 import { get } from "svelte/store";
 import { makeAPIRequest, makeGraphQLRequest } from "./requests.svelte";
 import matter from "gray-matter";
+import type { Character } from "$lib/types";
 
 /**
  * Fetch characters using the Github backend
@@ -11,26 +12,33 @@ import matter from "gray-matter";
  */
 export const fetchCharactersGithub = async () => {
     try {
-        let request = await makeRequestGithub(getCharacterDirectory(), 'GET');
+        let request = await downloadFilesGithub(getCharacterDirectory());
 
-        var validFiles = request.map((file: any) => {
+        // todo: simplify this logic
+        var files = request['data']['repository']['object']['entries'].map((file: any) => {
+            return {
+                name : file.name,
+                text : file.object.text
+            };
+        }).filter((file: any) => file !== null);
+
+        var validFiles = files.map((file: any) => {
+            //todo: support non-md file extensions
             return file.name.endsWith(".md") ? file : null;
         }).filter((file: any) => file !== null);
 
-        var chars = [];
+        var chars = <Character[]>[];
 
         for (const file of validFiles) {
-            let contents = await downloadFileGithub(file.path);
 
-            let raw = contents['data']['repository']['object']['text'];
-            let parsed = matter(raw);
+            let parsed = matter(file.text);
 
-            const { name, tags, folder, ...fields } = parsed.data;
+            const { name, tags, category, ...fields } = parsed.data;
 
             chars.push({
                 name: name,
                 tags: tags,
-                folder: folder,
+                category: category,
                 fields: fields,
                 filename: file.name,
                 contents: parsed.content,
@@ -79,10 +87,10 @@ export const downloadFileGithub = async (path: string) => {
                 }}}}`;
 
     return await makeGraphQLRequest(getBaseUrl(true),
-    {
-        'Authorization': `token ` + get(settings).TOKEN,
-        'Content-Type': 'application/json'
-    }, query);
+        {
+            'Authorization': `token ` + get(settings).TOKEN,
+            'Content-Type': 'application/json'
+        }, query);
 }
 
 /**
@@ -104,18 +112,21 @@ export const downloadFilesGithub = async (path: string) => {
                               }}}}}}}`;
 
     return await makeGraphQLRequest(getBaseUrl(true),
-    {
-        'Authorization': `token ` + get(settings).TOKEN,
-        'Content-Type': 'application/json'
-    }, query);
+        {
+            'Authorization': `token ` + get(settings).TOKEN,
+            'Content-Type': 'application/json'
+        }, query);
 }
 
 /**
  * Put a file using the Github backend
  * 
+ * @param directory The target directory
+ * @param data The body of the request
+ * @param addition Whether or not this is an addition (true) or a deletion (false)
  * @returns JSON api response
  */
-export const putFileGithub = async (directory: string, data: any = null) => {
+export const putFileGithub = async (directory: string, data: any = null, addition: boolean = true) => {
 
     //first we get the oid because nothing can be easy
     var query = `{ repository(name: "` + get(settings).REPO_NAME + `", owner: "` + get(settings).OWNER_NAME + `") {
@@ -138,6 +149,27 @@ export const putFileGithub = async (directory: string, data: any = null) => {
     //there has GOT to be a better way to do this
     var oid = response['data']['repository']['ref']['target']['history']['nodes'][0]['oid'];
 
+    var fileChanges;
+    if (addition == true) {
+        fileChanges = {
+            additions: [
+                {
+                    path: directory,
+                    contents: data.content
+                }
+            ]
+        };
+    } else {
+        fileChanges = {
+            deletions: [
+                {
+                    path: directory,
+                    contents: data.content
+                }
+            ]
+        };
+    }
+
     //now we can put the file
     query = `mutation ($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { url } } }`;
     let variables = {
@@ -149,14 +181,7 @@ export const putFileGithub = async (directory: string, data: any = null) => {
             message: {
                 headline: data.message
             },
-            fileChanges: {
-                additions: [
-                    {
-                        path: directory,
-                        contents: data.content
-                    }
-                ]
-            },
+            fileChanges: fileChanges,
             expectedHeadOid: oid
         }
     };

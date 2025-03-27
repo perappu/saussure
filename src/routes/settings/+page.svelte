@@ -109,43 +109,7 @@
 </label>
 
 {#if $settings.FRONTEND == "custom"}
-<label>
-	Character Directory:
-	<input
-		name="character_directory"
-		autocomplete="off"
-		bind:value={$settings.CHARACTER_DIRECTORY}
-		{onchange}
-	/>
-</label>
-<label>
-	Gallery Directory:
-	<input
-		name="gallery_directory"
-		autocomplete="off"
-		bind:value={$settings.GALLERY_DIRECTORY}
-		{onchange}
-	/>
-</label>
-<label>
-	Image Directory:
-	<input
-		name="image_directory"
-		autocomplete="off"
-		bind:value={$settings.IMAGE_DIRECTORY}
-		{onchange}
-	/>
-</label>
-<label>
-	Literature Directory:
-	<input
-		name="literature_directory"
-		autocomplete="off"
-		bind:value={$settings.LITERATURE_DIRECTORY}
-		{onchange}
-	/>
-</label>
-
+<br>
 <label>
 	Layouts Directory:
 	<input
@@ -155,6 +119,74 @@
 		{onchange}
 	/>
 </label>
+<label>
+	Base Layout Filename:
+	<input
+		name="layouts_directory"
+		autocomplete="off"
+		bind:value={$settings.BASE_LAYOUT}
+		{onchange}
+	/>
+</label>
+<label>
+	Character Layout Filename:
+	<input
+		name="layouts_directory"
+		autocomplete="off"
+		bind:value={$settings.CHARACTER_LAYOUT}
+		{onchange}
+	/>
+</label>
+<label>
+	Image Layout Filename:
+	<input
+		name="layouts_directory"
+		autocomplete="off"
+		bind:value={$settings.IMAGE_LAYOUT}
+		{onchange}
+	/>
+</label>
+<label>
+	Literature Layout Filename:
+	<input
+		name="layouts_directory"
+		autocomplete="off"
+		bind:value={$settings.LITERATURE_LAYOUT}
+		{onchange}
+	/>
+</label>
+<br>
+<label>
+	Character Directory:
+	<input
+		name="character_directory"
+		autocomplete="off"
+		bind:value={$settings.CHARACTER_DIRECTORY}
+		{onchange}
+	/>
+</label>
+<br>
+<label>
+	Image Directory:
+	<input
+		name="image_directory"
+		autocomplete="off"
+		bind:value={$settings.IMAGE_DIRECTORY}
+		{onchange}
+	/>
+</label>
+<br>
+<label>
+	Literature Directory:
+	<input
+		name="literature_directory"
+		autocomplete="off"
+		bind:value={$settings.LITERATURE_DIRECTORY}
+		{onchange}
+	/>
+</label>
+<br>
+
 {/if}
 
 <hr>

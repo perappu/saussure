@@ -5,6 +5,22 @@
 	<meta charset="utf-8" />
 	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<link id="watercss" rel="stylesheet" href="">
+
+	<!--handling this outside of svelte to avoid flashing a white screen every time we refresh the page-->
+	<script>
+		let styleUrl = "";
+
+		if(localStorage.getItem("SETTINGS") && JSON.parse(localStorage.getItem("SETTINGS")).THEME) {
+			if(JSON.parse(localStorage.getItem("SETTINGS")).THEME == 'light') {
+				styleUrl = "https://cdn.jsdelivr.net/npm/water.css@2/out/light.css";
+			} else {
+				styleUrl = "https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css";
+			}
+		}
+		document.getElementById("watercss").setAttribute("href", styleUrl);
+	</script>
 
 	%sveltekit.head%
 	<link rel="stylesheet" href="/shared.css">

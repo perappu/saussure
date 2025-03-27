@@ -11,6 +11,7 @@ iframe {
     height: -webkit-fill-available;
     height: fill-available;
     border: none;
+    border-radius: 10px;
 }
 </style>
 

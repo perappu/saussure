@@ -1,12 +1,11 @@
 <script lang="ts">
+    import { invalidate, invalidateAll } from '$app/navigation';
+    import { characters, fetchCharacters } from '$lib/data/characters.svelte';
     import { m } from '$lib/paraglide/messages';
-    import type { LayoutProps } from '../$types';
+    import { get } from 'svelte/store';
     import Character from './character.svelte';
 
-	let { data }: LayoutProps = $props();
-
     //so we can do operations on it
-    let characters = $state(data.characters!);
     let order = $state(1);
 
     function sortName(multiplier: number) {
@@ -15,8 +14,8 @@
         } else {
             order = 1;
         }
-
-        characters.sort((a,b) => { 
+        
+        characters.set(get(characters).sort((a, b) => { 
             if (a.name > b.name) {
                 return 1 * multiplier;
             }
@@ -24,7 +23,7 @@
                 return -1 * multiplier;
             } 
             return 0;
-        })
+        }));
     }
 
 </script>
@@ -41,11 +40,13 @@
         {:else}
         ↑
         {/if}
-        
+    </button>
+    <button onclick={async () => {await invalidateAll()}}>
+        {m.refresh_list()}
     </button>
     </div>
     
-    {#each characters as character (character)}
+    {#each $characters as character (character.filename)}
         <Character {character} />
         <hr>
     {/each}

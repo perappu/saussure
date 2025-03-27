@@ -2,16 +2,15 @@
     import { beforeNavigate, goto } from "$app/navigation";
     import { Field, TextEditor } from "$lib/components";
     import { textValue } from "$lib/components/texteditor/texteditor";
-    import { writeCharacter } from "$lib/data/characters.svelte";
+    import { characters, writeCharacter } from "$lib/data/characters.svelte";
     import { m } from "$lib/paraglide/messages";
-    import type { LayoutProps } from "../../$types";
+    import { toast } from "@zerodevx/svelte-toast";
 
-    let { data }: LayoutProps = $props();
     let descriptionEditor: TextEditor | undefined;
     let numFields: any[] = $state([]);
     let confirmed: boolean = false;
 
-    let filename = (data.characters?.length ?? 0) + 1;
+    let filename = ($characters.length ?? 0) + 1;
 
     async function submitCharacter() {
         let formData = new FormData(
@@ -21,16 +20,26 @@
         let result = await writeCharacter(filename + ".md", formData);
         confirmed = true;
         //todo: give user feedback that the file has been saved
+        toast.push(m.toast_create_character(), {
+            theme: {
+                "--toastColor": "mintcream",
+                "--toastBackground": "rgba(62, 168, 106,0.9)",
+                "--toastBarBackground": "#2F855A",
+                "--toastWidth" : "23rem",
+                "--toastContainerLeft" : "calc(50vw - 23rem)"
+            },
+            duration: 10000
+        });
         goto("/characters");
     }
 
     beforeNavigate(({ cancel }) => {
-        if(!confirmed) {
-            if (!confirm('Are you sure you want to leave this page? You may have unsaved changes that will be lost.')) {
-            cancel();
+        if (!confirmed) {
+            if (!confirm(m.are_you_sure())) {
+                cancel();
             }
         }
-	});
+    });
 </script>
 
 <form action="javascript:void(0);" id="characterEdit">

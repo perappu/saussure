@@ -1,13 +1,13 @@
 import { settings } from "$lib/config";
 import { get } from "svelte/store";
-import { renderCharacterLayout11ty } from "./11ty.svelte";
+import { renderLayout } from "./layouts.svelte";
 
 /**
  * Render the character preview based on the user's frontend settings
  * 
  * @returns The rendered HTML
  */
-export const renderCharacterPreview = async (layouts: any, formData: FormData) => {
+export const renderCharacterPreview = (layouts: any, formData: FormData) => {
 
     var data: any = Object.fromEntries(formData);
 
@@ -22,11 +22,7 @@ export const renderCharacterPreview = async (layouts: any, formData: FormData) =
 
     var allData = {...data, ...fields};
 
-    if(get(settings).FRONTEND === '11ty') {
-        return await renderCharacterLayout11ty(layouts, allData) as string;
-    } else if(get(settings).FRONTEND === 'custom') {
-        //TODO
-    } else {
-        return null;
-    }
+    var rendered = renderLayout(layouts, get(settings).CHARACTER_LAYOUT, allData) as string;
+
+    return rendered;
 }

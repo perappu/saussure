@@ -1,8 +1,9 @@
 import YAML from 'yaml';
 import { persisted } from 'svelte-persisted-store';
+import type { Settings } from '$lib/types';
 
 export var siteConfig = {};
-export const settings = persisted('SETTINGS', {} as App.Settings);
+export const settings = persisted('SETTINGS', {} as Settings);
 export const locale = persisted('LOCALE', 'en');
 
 /**

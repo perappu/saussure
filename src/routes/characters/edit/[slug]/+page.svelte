@@ -1,45 +1,90 @@
 <script lang="ts">
-	import { beforeNavigate } from "$app/navigation";
+	import { beforeNavigate, goto, invalidateAll } from "$app/navigation";
 	import { Field, TextEditor } from "$lib/components";
-    import Preview from "$lib/components/preview/preview.svelte";
+	import Preview from "$lib/components/preview/preview.svelte";
 	import { textValue } from "$lib/components/texteditor/texteditor";
-	import { writeCharacter } from "$lib/data/characters.svelte";
+	import {
+		deleteCharacter,
+		writeCharacter,
+	} from "$lib/data/characters.svelte";
 	import { renderCharacterPreview } from "$lib/frontends/previews.svelte";
 	import { m } from "$lib/paraglide/messages";
-    import { onMount } from "svelte";
+	import { onMount } from "svelte";
 	import type { PageProps } from "./$types";
+	import { toast } from "@zerodevx/svelte-toast";
 
 	let { data }: PageProps = $props();
 	let descriptionEditor: TextEditor | undefined;
 	let numFields: any[] = $state([]);
 	let preview: string | undefined | null = $state("");
+	let deleteCounter = 0;
+	let confirmed = false;
 
-	async function submitCharacter() {
+	async function submitThis() {
 		var formData = new FormData(
 			document.querySelector("#characterEdit") as HTMLFormElement,
 		);
 		formData.append("content", $textValue);
 		var result = await writeCharacter(data.character.filename, formData);
 		//todo: give user feedback that the file has been saved
+		toast.push(m.toast_edit_character(), {
+			theme: {
+				"--toastColor": "mintcream",
+				"--toastBackground": "rgba(62, 168, 106,0.9)",
+				"--toastBarBackground": "#2F855A",
+			},
+		});
+		await invalidateAll();
 	}
 
-	async function renderPreview() {
+	async function deleteThis() {
+		if (deleteCounter === 0) {
+			document.getElementById("delete")!.innerHTML = "Are you sure?";
+			deleteCounter++;
+		} else if (deleteCounter === 1) {
+			document.getElementById("delete")!.innerHTML = "Really sure?";
+			deleteCounter++;
+		} else if (deleteCounter > 1) {
+			confirmed = true;
+			document.getElementById("delete")!.innerHTML = "Deleting...";
+			var formData = new FormData(
+				document.querySelector("#characterEdit") as HTMLFormElement,
+			);
+			var result = await deleteCharacter(
+				data.character.filename,
+				formData,
+			);
+			toast.push(m.toast_delete_character(), {
+				theme: {
+					"--toastColor": "mintcream",
+					"--toastBackground": "rgba(62, 168, 106,0.9)",
+					"--toastBarBackground": "#2F855A",
+				},
+			});
+			await invalidateAll();
+			goto("/characters");
+		}
+	}
+
+	function renderPreview() {
 		var formData = new FormData(
 			document.querySelector("#characterEdit") as HTMLFormElement,
 		);
 		formData.append("content", $textValue);
-		preview = await renderCharacterPreview(data.layouts, formData);
+		preview = renderCharacterPreview(data.layouts, formData);
 	}
 
-	async function onchange() {
-		await renderPreview();
+	function onchange() {
+		renderPreview();
 	}
 
-	onMount(async () => await renderPreview());
+	onMount(() => renderPreview());
 
-    beforeNavigate(({ cancel }) => {
-		if (!confirm('Are you sure you want to leave this page? You may have unsaved changes that will be lost.')) {
-		cancel();
+	beforeNavigate(({ cancel }) => {
+		if (confirmed == false) {
+			if (!confirm(m.are_you_sure())) {
+				cancel();
+			}
 		}
 	});
 </script>
@@ -74,7 +119,12 @@
 			{m.fields()}:
 			<!--existing fields-->
 			{#each Object.keys(data.character.fields) as key, index}
-				<Field {index} {key} value={data.character.fields[key]} {onchange}/>
+				<Field
+					{index}
+					{key}
+					value={data.character.fields[key]}
+					{onchange}
+				/>
 			{/each}
 			<!--new fields-->
 			{#each numFields as f, index}
@@ -99,12 +149,17 @@
 			/>
 
 			<div style="text-align:right; margin: 5px;">
-				<button onclick={submitCharacter}>{m.save()}</button>
+				<button onclick={submitThis}>{m.save()}</button>
+			</div>
+			<div style="text-align:right; margin: 5px;">
+				<button id="delete" class="danger" onclick={deleteThis}
+					>{m.delete()}</button
+				>
 			</div>
 		</form>
 	</div>
 
-	<div style="width: 45%;">
+	<div style="width: 48%;">
 		<Preview html={preview} />
 	</div>
 </div>

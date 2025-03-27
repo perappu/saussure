@@ -16,6 +16,7 @@
 	"description": "Description",
 	"code": "code",
 	"updated_file": "Updated file",
+	"deleted_file": "Deleted file",
 	"theme" : "Theme",
 	"light" : "Light",
 	"dark" : "Dark",
@@ -29,8 +30,14 @@
 	"media_storage" : "Media Storage",
 	"save" : "Save",
 	"back": "Back",
+	"delete" : "Delete",
 	"add_new_character": "Add New Character",
 	"sort_alphabetical": "Sort Alphabetical",
 	"edit_character": "Edit Character",
-	"warn_enter_settings": "Please fill out your settings to get started!"
+	"warn_enter_settings": "Please fill out your settings to get started!",
+	"refresh_list": "Refresh List",
+	"are_you_sure" : "Are you sure you want to leave this page? You may have unsaved changes that will be lost.",
+	"toast_edit_character" : "Character has been saved!",
+	"toast_create_character": "Character has been created! <br> It may take some time for the new file to appear.",
+	"toast_delete_character": "Character has been deleted."
 }

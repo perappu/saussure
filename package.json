@@ -18,6 +18,7 @@
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@types/ace": "^0.0.52",
 		"@types/nunjucks": "^3.2.6",
+		"@zerodevx/svelte-toast": "^0.9.6",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"typescript": "^5.0.0",
@@ -30,7 +31,10 @@
 		"@inlang/paraglide-js": "^2.0.0",
 		"ace-builds": "^1.39.1",
 		"gray-matter": "^4.0.3",
+		"handlebars": "^4.7.8",
 		"htmlfy": "^0.6.2",
+		"liquidjs": "^10.21.0",
+		"markdown-it": "^14.1.0",
 		"nunjucks": "^3.2.4",
 		"svelte-persisted-store": "^0.12.0",
 		"yaml": "^2.7.0"

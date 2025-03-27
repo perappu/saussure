@@ -2,4 +2,6 @@
 	let { character } = $props();
 </script>
 
-<a href="/characters/edit/{character.filename}">{character.name} <small>{character.filename}</small></a>
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<a href="/characters/edit/{character.filename}">{character.name}</a> <small>{character.filename}</small>
+</div>
