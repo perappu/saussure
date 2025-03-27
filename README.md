@@ -9,3 +9,9 @@ Currently only works for GitHub as a backend and 11ty as a frontend, but support
 Can be simply utilized from [this version]() already hosted in the browser, as it saves your settings in localStorage. Alternatively, download it to your own computer and run it locally.
 
 Start by cloning a repository such as [this one](), or configure your own. Then load in your personal access token and you're good to go!
+
+Current rendering engines supported
+- Markdown (.md)
+- Nunjucks (.njk)
+- Liquid (.liquid)
+- Handlebars (.hbs)

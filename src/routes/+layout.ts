@@ -5,7 +5,6 @@ import type { LayoutLoad } from './$types';
 import { locale, settings } from '$lib/config';
 
 export const ssr = false;
-export const prerender = true;
 
 export const load: LayoutLoad = async () => {
 
