@@ -1,9 +1,9 @@
-import { getBaseUrl, getCharacterDirectory } from "$lib/config/directories";
+import { getBaseUrl } from "$lib/config/directories";
 import { settings } from "$lib/config";
 import { get } from "svelte/store";
 import { makeAPIRequest, makeGraphQLRequest } from "./requests.svelte";
 import matter from "gray-matter";
-import type { Character } from "$lib/types";
+import type { Character, Image } from "$lib/types";
 
 /**
  * Fetch characters using the Github backend
@@ -12,13 +12,13 @@ import type { Character } from "$lib/types";
  */
 export const fetchCharactersGithub = async () => {
     try {
-        let request = await downloadFilesGithub(getCharacterDirectory());
+        let request = await downloadFilesGithub(get(settings).CHARACTER_DIRECTORY);
 
         // todo: simplify this logic
         var files = request['data']['repository']['object']['entries'].map((file: any) => {
             return {
-                name : file.name,
-                text : file.object.text
+                name: file.name,
+                text: file.object.text
             };
         }).filter((file: any) => file !== null);
 
@@ -49,6 +49,58 @@ export const fetchCharactersGithub = async () => {
         return chars;
     } catch (ex: any) {
         throw new Error("Couldn't fetch characters", { cause: ex });
+    }
+}
+
+/**
+ * Fetch images using the Github backend
+ * 
+ * @returns JSON of the character files
+ */
+export const fetchImagesGithub = async () => {
+    try {
+        try {
+            let request = await downloadFilesGithub(get(settings).IMAGE_DIRECTORY);
+
+            // todo: simplify this logic
+            var files = request['data']['repository']['object']['entries'].map((file: any) => {
+                return {
+                    name: file.name,
+                    text: file.object.text
+                };
+            }).filter((file: any) => file !== null);
+        } catch (ex: any) {
+            console.log("Could not find images in response -- directory either nonexistent or empty")
+            return [];
+        }
+
+        var validFiles = files.map((file: any) => {
+            //todo: support non-md file extensions? we may just force everything to markdown
+            return file.name.endsWith(".md") ? file : null;
+        }).filter((file: any) => file !== null);
+
+        var imgs = <Image[]>[];
+
+        for (const imgFile of validFiles) {
+
+            let parsed = matter(imgFile.text);
+
+            const { title, tags, character, file, ...fields } = parsed.data;
+
+            imgs.push({
+                title: title,
+                tags: tags,
+                character: character,
+                fields: fields,
+                filename: file,
+                contents: parsed.content,
+                sha: file.sha
+            });
+        }
+
+        return imgs;
+    } catch (ex: any) {
+        throw new Error("Couldn't fetch images", { cause: ex });
     }
 }
 

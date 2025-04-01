@@ -18,7 +18,11 @@
 			} else {
 				styleUrl = "https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css";
 			}
+		} else {
+				styleUrl = "https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css";
 		}
+
+		document.getElementById("watercss").setAttribute('href', styleUrl);
 	</script>
 
 	%sveltekit.head%

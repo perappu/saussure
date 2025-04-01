@@ -37,6 +37,7 @@
 		"htmlfy": "^0.6.2",
 		"liquidjs": "^10.21.0",
 		"markdown-it": "^14.1.0",
+		"memfs": "^4.17.0",
 		"nunjucks": "^3.2.4",
 		"svelte-persisted-store": "^0.12.0",
 		"yaml": "^2.7.0"

@@ -1,13 +1,9 @@
-import { getCharacterDirectory } from "$lib/config/directories";
 import matter from "gray-matter";
 import { get, writable } from "svelte/store";
 import { fetchCharactersGithub, putFileGithub } from "$lib/backends/github.svelte";
 import { settings } from "$lib/config";
 import { m } from "$lib/paraglide/messages";
-import { invalidateAll } from "$app/navigation";
-import type { Character } from "$lib/types";
-
-export const characters = writable([] as Character[]);
+import { characters } from "$lib/stores";
 
 /**
  * Fetch characters based on the user's backend settings
@@ -16,7 +12,15 @@ export const characters = writable([] as Character[]);
  */
 export const fetchCharacters = async () => {
     if (get(settings).BACKEND === 'github') {
-        characters.set(await fetchCharactersGithub());
+        characters.set((await fetchCharactersGithub()).sort((a, b) => { 
+            if (a.name > b.name) {
+                return 1;
+            }
+            if (a.name < b.name) {
+                return -1;
+            } 
+            return 0;
+        }));
     } else if (get(settings).BACKEND === 'forgejo') {
         //TODO
     } else {
@@ -61,7 +65,7 @@ export const writeCharacter = async (filename: string, formData: FormData) => {
 
     //call putFile function based on configured backend
     if (get(settings).BACKEND === 'github') {
-        return await putFileGithub(getCharacterDirectory() + "/" + filename, body);
+        return await putFileGithub(get(settings).CHARACTER_DIRECTORY + "/" + filename, body);
     } else if (get(settings).BACKEND === 'forgejo') {
         //TODO
     } else {
@@ -89,7 +93,7 @@ export const deleteCharacter = async (filename: string, formData: FormData) => {
 
     //call putFile function based on configured backend
     if (get(settings).BACKEND === 'github') {
-        return await putFileGithub(getCharacterDirectory() + "/" + filename, body, false);
+        return await putFileGithub(get(settings).CHARACTER_DIRECTORY + "/" + filename, body, false);
     } else if (get(settings).BACKEND === 'forgejo') {
         //TODO
     } else {

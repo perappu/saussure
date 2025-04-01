@@ -18,21 +18,3 @@ export function getBaseUrl(graphQL: boolean = false) {
         return '';
     }
 }
-
-/**
- * Get the character directory based on the user's frontend settings
- * 
- * @returns The directory to use
- */
-export function getCharacterDirectory() {
-
-    if(get(settings).FRONTEND == 'custom') {
-        if(get(settings).CHARACTER_DIRECTORY) {
-            return get(settings).CHARACTER_DIRECTORY;
-        } else {
-            return '';
-        }
-    } else if(get(settings).FRONTEND == '11ty') {
-        return 'content/characters';
-    }
-}

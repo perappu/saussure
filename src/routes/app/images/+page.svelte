@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { invalidate, invalidateAll } from '$app/navigation';
-    import { characters, fetchCharacters } from '$lib/data/characters.svelte';
+    import { invalidateAll } from '$app/navigation';
     import { m } from '$lib/paraglide/messages';
     import { get } from 'svelte/store';
-    import Character from './character.svelte';
+    import Image from './image.svelte';
+    import { characters, images } from '$lib/stores';
 
     //so we can do operations on it
     let order = $state(1);
@@ -28,7 +28,7 @@
 
 </script>
 
-<h2>{m.characters()}</h2>
+<h2>{m.images()}</h2>
 
 
 {#if localStorage.getItem("SETTINGS") && JSON.parse(localStorage.getItem("SETTINGS")!).TOKEN}
@@ -46,12 +46,12 @@
     </button>
     </div>
     
-    {#each $characters as character (character.filename)}
-        <Character {character} />
+    {#each $images as image (image.filename)}
+        <Image {image} />
         <hr>
     {/each}
     
-    <a href="{process.env.BASE_PATH}/characters/create"><button style="width: 100%">{m.add_new_character()}</button></a>
+    <a href="{process.env.BASE_PATH}/images/create"><button style="width: 100%">{m.add_new_image()}</button></a>
     {:else}
     {m.warn_enter_settings()}
 {/if}

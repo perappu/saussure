@@ -14,8 +14,13 @@ export default defineConfig({
 		}),
         nodePolyfills({
             globals: {
-                Buffer: true, // can also be 'build', 'dev', or false
+                Buffer: true, // can also be 'build', 'dev', or false,
+				process: true
               },
+			overrides: {
+			// Since `fs` is not supported in browsers, we can use the `memfs` package to polyfill it.
+				fs: 'memfs',
+			},
         })
 	]
 });

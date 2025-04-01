@@ -1,6 +1,13 @@
 <script lang="ts">
-    import { m } from '$lib/paraglide/messages';
-</script>
+    import { goto } from "$app/navigation";
+    import { loggedIn } from "$lib/stores";
+    import { onMount } from "svelte";
 
-<h1>{m.hello()}</h1>
-<p>Click one of the above tabs to get started.</p>
+    onMount(async () => {
+        if ($loggedIn) {
+            goto('/app');
+        } else {
+            goto('/login');
+        }
+    });
+</script>
