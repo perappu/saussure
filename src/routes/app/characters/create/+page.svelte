@@ -2,8 +2,9 @@
     import { beforeNavigate, goto } from "$app/navigation";
     import { Field, TextEditor } from "$lib/components";
     import { textValue } from "$lib/components/texteditor/texteditor";
-    import { characters, writeCharacter } from "$lib/data/characters.svelte";
+    import { writeCharacter } from "$lib/data/characters.svelte";
     import { m } from "$lib/paraglide/messages";
+    import { characters } from "$lib/stores";
     import { toast } from "@zerodevx/svelte-toast";
 
     let descriptionEditor: TextEditor | undefined;
