@@ -1,9 +1,10 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import { fetchLayout } from '$lib/frontends/layouts.svelte';
-import { characters, fetchCharacters } from "$lib/data/characters.svelte";
+import { fetchCharacters } from "$lib/data/characters.svelte";
 import { get } from 'svelte/store';
 import { settings } from '$lib/config';
+import { characters } from '$lib/stores';
 
 export const load: PageLoad = async ({ params, parent }) => {
 
