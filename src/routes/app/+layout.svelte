@@ -40,7 +40,6 @@
     {/if}
 </svelte:head>
 
-<RedirectGate passcondition={$loggedIn} logout={true}>
 <header>
     <nav>
         <a href="{process.env.BASE_PATH}/app/">{m.home()}</a>
@@ -66,4 +65,3 @@
 <footer style="text-align: center; margin: 10px;">
     <Locale />
 </footer>
-</RedirectGate>
