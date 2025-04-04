@@ -7,50 +7,37 @@
 
 	let changes = get(settings);
 
-	function toggleFrontend() {
+	function toggleFrontend(is_disabled: boolean) {
 		(document.getElementById(
 			"layouts_directory",
-		) as HTMLInputElement)!.disabled = !(document.getElementById(
-			"layouts_directory",
-		) as HTMLInputElement)!.disabled;
+		) as HTMLInputElement)!.disabled = is_disabled;
 		(document.getElementById("base_layout") as HTMLInputElement)!.disabled =
-			!(document.getElementById("base_layout") as HTMLInputElement)!
-				.disabled;
+			is_disabled;
 		(document.getElementById(
 			"character_layout",
-		) as HTMLInputElement)!.disabled = !(document.getElementById(
-			"character_layout",
-		) as HTMLInputElement)!.disabled;
+		) as HTMLInputElement)!.disabled = is_disabled;
 		(document.getElementById(
 			"image_layout",
-		) as HTMLInputElement)!.disabled = !(document.getElementById(
-			"image_layout",
-		) as HTMLInputElement)!.disabled;
+		) as HTMLInputElement)!.disabled = is_disabled;
 		(document.getElementById(
 			"literature_layout",
-		) as HTMLInputElement)!.disabled = !(document.getElementById(
-			"literature_layout",
-		) as HTMLInputElement)!.disabled;
+		) as HTMLInputElement)!.disabled = is_disabled;
 		(document.getElementById(
 			"character_directory",
-		) as HTMLInputElement)!.disabled = !(document.getElementById(
-			"character_directory",
-		) as HTMLInputElement)!.disabled;
+		) as HTMLInputElement)!.disabled = is_disabled;
 		(document.getElementById(
 			"image_directory",
-		) as HTMLInputElement)!.disabled = !(document.getElementById(
-			"image_directory",
-		) as HTMLInputElement)!.disabled;
+		) as HTMLInputElement)!.disabled = is_disabled;
 		(document.getElementById(
 			"literature_directory",
-		) as HTMLInputElement)!.disabled = !(document.getElementById(
-			"literature_directory",
-		) as HTMLInputElement)!.disabled;
+		) as HTMLInputElement)!.disabled = is_disabled;
 	}
 
 	onMount(() => {
-		if ($settings.FRONTEND !== "custom") {
-			toggleFrontend();
+		if ($settings.FRONTEND == "custom") {
+			toggleFrontend(false);
+		} else {
+			toggleFrontend(true);
 		}
 	});
 
@@ -59,9 +46,12 @@
 
 		if ($settings.FRONTEND === "11ty") {
 			setConfigEleventy();
-			toggleFrontend();
+		}
+
+		if ($settings.FRONTEND == "custom") {
+			toggleFrontend(false);
 		} else {
-			toggleFrontend();
+			toggleFrontend(true);
 		}
 	};
 </script>
@@ -108,16 +98,6 @@
 			<option value="github">GitHub</option>
 			<option value="forgejo">Forgejo/Gitea</option>
 		</select>
-	</label>
-
-	<label>
-		{m.api_token()}:
-		<input
-			name="token"
-			autocomplete="off"
-			bind:value={$settings.TOKEN}
-			{onchange}
-		/>
 	</label>
 
 	<label>
@@ -263,5 +243,4 @@
 			{onchange}
 		/>
 	</label>
-
 </div>
