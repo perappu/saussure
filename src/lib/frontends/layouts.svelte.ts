@@ -1,7 +1,7 @@
 import { downloadFilesGithub } from "$lib/backends/github.svelte";
-import { settings } from "$lib/config";
 import { get } from "svelte/store";
 import { renderHandlebars, renderLiquid, renderMarkdown, renderNunjucks } from "./renderers.svelte";
+import { settings } from "$lib/stores";
 
 /**
  * Fetch the character layouts from the API

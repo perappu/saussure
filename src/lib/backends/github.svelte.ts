@@ -1,9 +1,9 @@
 import { getBaseUrl } from "$lib/config/directories";
-import { settings } from "$lib/config";
 import { get } from "svelte/store";
 import { makeAPIRequest, makeGraphQLRequest } from "./requests.svelte";
 import matter from "gray-matter";
 import type { Character, Image } from "$lib/types";
+import { settings, token } from "$lib/stores";
 
 /**
  * Fetch characters using the Github backend
@@ -11,6 +11,7 @@ import type { Character, Image } from "$lib/types";
  * @returns JSON of the character files
  */
 export const fetchCharactersGithub = async () => {
+
     try {
         let request = await downloadFilesGithub(get(settings).CHARACTER_DIRECTORY);
 
@@ -115,7 +116,7 @@ export const makeRequestGithub = async (directory: string, method: string, data:
         getBaseUrl() + get(settings).OWNER_NAME + '/' + get(settings).REPO_NAME + '/contents/' + directory,
         'GET',
         {
-            'Authorization': `Bearer ` + get(settings).TOKEN,
+            'Authorization': `Bearer ` + get(token),
             'Content-Type': 'application/json',
             'X-GitHub-Api-Version': '2022-11-28',
             'Accept': 'application/vnd.github+json'
@@ -140,7 +141,7 @@ export const downloadFileGithub = async (path: string) => {
 
     return await makeGraphQLRequest(getBaseUrl(true),
         {
-            'Authorization': `token ` + get(settings).TOKEN,
+            'Authorization': `token ` + get(token),
             'Content-Type': 'application/json'
         }, query);
 }
@@ -165,7 +166,7 @@ export const downloadFilesGithub = async (path: string) => {
 
     return await makeGraphQLRequest(getBaseUrl(true),
         {
-            'Authorization': `token ` + get(settings).TOKEN,
+            'Authorization': `token ` + get(token),
             'Content-Type': 'application/json'
         }, query);
 }
@@ -192,7 +193,7 @@ export const putFileGithub = async (directory: string, data: any = null, additio
                 }}}}}}}`;
 
     var headers = {
-        'Authorization': `token ` + get(settings).TOKEN,
+        'Authorization': `token ` + get(token),
         'Content-Type': 'application/json'
     };
 

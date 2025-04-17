@@ -1,4 +1,4 @@
-import { settings } from "$lib/config";
+import { settings } from "$lib/stores";
 import { get } from "svelte/store";
 
 /**

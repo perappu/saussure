@@ -9,10 +9,10 @@
 	import "./texteditor.css";
 	import { prettify } from "htmlfy";
     import { textValue } from "./texteditor";
-    import { settings } from "$lib/config";
     import Aceeditor from "../aceeditor/aceeditor.svelte";
     import { m } from "$lib/paraglide/messages";
 	import StarterKit from "@tiptap/starter-kit";
+    import { settings } from "$lib/stores";
 
 	let { contents, selectedTab, onfocusout = null } = $props();
 

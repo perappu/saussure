@@ -1,8 +1,7 @@
 <script lang="ts">
     import { setLocale } from "$lib/paraglide/runtime";
     import { page } from '$app/state';
-    import { locale } from "$lib/config";
-
+    import { locale } from "$lib/stores";
 
     function onclick(lang: string) {
         locale.set(lang);

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { setConfigEleventy, settings } from "$lib/config";
+	import { setConfigEleventy } from "$lib/config";
 	import { get } from "svelte/store";
-	import type { PageProps } from "./$types";
 	import { m } from "$lib/paraglide/messages";
 	import { onMount } from "svelte";
+    import { settings } from "$lib/stores";
 
 	let changes = get(settings);
 

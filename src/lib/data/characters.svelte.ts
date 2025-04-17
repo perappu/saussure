@@ -1,9 +1,8 @@
 import matter from "gray-matter";
 import { get, writable } from "svelte/store";
 import { fetchCharactersGithub, putFileGithub } from "$lib/backends/github.svelte";
-import { settings } from "$lib/config";
 import { m } from "$lib/paraglide/messages";
-import { characters } from "$lib/stores";
+import { characters, settings } from "$lib/stores";
 
 /**
  * Fetch characters based on the user's backend settings

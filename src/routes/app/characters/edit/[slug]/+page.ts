@@ -3,8 +3,7 @@ import type { PageLoad } from './$types';
 import { fetchLayout } from '$lib/frontends/layouts.svelte';
 import { fetchCharacters } from "$lib/data/characters.svelte";
 import { get } from 'svelte/store';
-import { settings } from '$lib/config';
-import { characters } from '$lib/stores';
+import { characters, settings } from '$lib/stores';
 
 export const load: PageLoad = async ({ params, parent }) => {
 

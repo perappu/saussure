@@ -2,10 +2,9 @@ import YAML from 'yaml';
 import { persisted } from 'svelte-persisted-store';
 import type { Settings } from '$lib/types';
 import { get } from 'svelte/store';
+import { settings } from '$lib/stores';
 
 export var siteConfig = {};
-export const settings = persisted('SETTINGS', {} as Settings);
-export const locale = persisted('LOCALE', 'en');
 
 /**
  * Get the user's local YAML config file

@@ -1,14 +1,12 @@
 <script lang="ts">
-    import { settings } from "$lib/config";
     import { navigating, page } from "$app/state";
     import { m } from "$lib/paraglide/messages";
-    import { Locale, RedirectGate, Spinner } from "$lib/components";
+    import { Locale, Spinner } from "$lib/components";
     import { SvelteToast } from "@zerodevx/svelte-toast";
     import { onNavigate } from "$app/navigation";
-    import { fade } from "svelte/transition";
-    import { loggedIn } from "$lib/stores";
+    import { settings } from "$lib/stores";
 
-    let { children } = $props();
+    let { children, data } = $props();
 
     onNavigate((navigation) => {
         if (!document.startViewTransition) return;

@@ -4,9 +4,9 @@
     // ace editor is such a pain that we import it in app.html from the cdn
     // like i spent hours on this it's not worth making TS happy with imports and packages and all that
     import { onMount } from "svelte";
-    import { settings } from "$lib/config";
     import { textValue } from "../texteditor/texteditor";
     import { text } from "@sveltejs/kit";
+    import { settings } from "$lib/stores";
 
     let { contents } = $props();
 

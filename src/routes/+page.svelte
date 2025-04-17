@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    import { loggedIn } from "$lib/stores";
-    import { onMount } from "svelte";
 </script>
 
-<slot />
+<h1>Sign in</h1>
+<a href="/login/github">Sign in with GitHub</a>

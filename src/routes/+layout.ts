@@ -1,8 +1,7 @@
-import { fetchCharacters } from '$lib/data/characters.svelte';
-import { getLocale, setLocale } from '$lib/paraglide/runtime';
+import { setLocale } from '$lib/paraglide/runtime';
 import { get } from 'svelte/store';
-import type { LayoutLoad } from './$types';
-import { locale, settings } from '$lib/config';
+import type { LayoutLoad } from './app/$types';
+import { locale, settings } from '$lib/stores';
 
 export const ssr = false;
 

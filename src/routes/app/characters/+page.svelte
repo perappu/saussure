@@ -3,7 +3,7 @@
     import { m } from '$lib/paraglide/messages';
     import { get } from 'svelte/store';
     import Character from './character.svelte';
-    import { characters } from '$lib/stores';
+    import { characters, token } from '$lib/stores';
 
     //so we can do operations on it
     let order = $state(1);
@@ -31,7 +31,7 @@
 <h2>{m.characters()}</h2>
 
 
-{#if localStorage.getItem("SETTINGS") && JSON.parse(localStorage.getItem("SETTINGS")!).TOKEN}
+{#if $token != null && $token != ""}
 <div style="text-align: right;">
     <button onclick={() => {sortName(order)}}>
         {m.sort_alphabetical()}
@@ -51,7 +51,7 @@
         <hr>
     {/each}
     
-    <a href="{process.env.BASE_PATH}/characters/create"><button style="width: 100%">{m.add_new_character()}</button></a>
+    <a href="{process.env.BASE_PATH}/app/characters/create"><button style="width: 100%">{m.add_new_character()}</button></a>
     {:else}
     {m.warn_enter_settings()}
 {/if}
