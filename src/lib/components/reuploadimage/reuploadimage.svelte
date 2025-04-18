@@ -1,6 +1,6 @@
 <script lang="ts">
     import { invalidateAll } from "$app/navigation";
-    import { fetchBase64, reuploadImage } from "$lib/data/images.svelte";
+    import { fetchImageDownload, reuploadImage } from "$lib/data/images.svelte";
     import { m } from "$lib/paraglide/messages";
     import { settings } from "$lib/stores";
     import { toast } from "@zerodevx/svelte-toast";
@@ -9,18 +9,18 @@
 
     let { image } = $props();
 
-    let displayedImage = $state();
+    let displayedImage = $state('');
 
-    onMount (async () => {
-        displayedImage = await fetchBase64(get(settings).MEDIA_PATH + "/" + image.filename);
-    });
+    onMount( async () =>
+        displayedImage = await fetchImageDownload(get(settings).MEDIA_PATH + "/" + image.filename)
+    );
 
     const onFileSelected =(e: any)=>{
     let image = e.target.files[0];
                 let reader = new FileReader();
                 reader.readAsDataURL(image);
                 reader.onload = e => {
-                    displayedImage = e.target!.result
+                    displayedImage = e.target!.result as string
                 };
     }
 
@@ -30,7 +30,7 @@
 		);
 		var result = await reuploadImage(image.filename, formData);
 		//todo: give user feedback that the file has been saved
-		toast.push(m.toast_edit_character(), {
+		toast.push(m.toast_edit_image(), {
 			theme: {
 				"--toastColor": "mintcream",
 				"--toastBackground": "rgba(62, 168, 106,0.9)",

@@ -30,13 +30,13 @@ export const fetchImages = async () => {
 };
 
 /**
- * Fetch the base 64 representation of a specific image for displaying
+ * Fetch the 'download' link for an image to display it
  *
  * @returns The fetched characters
  */
-export const fetchBase64 = async (path: string) => {
+export const fetchImageDownload = async (path: string) => {
     if (get(settings).BACKEND === 'github') {
-        let file = fileToBase64(await downloadBinaryFileGithub(path));
+        let file = await downloadBinaryFileGithub(path);
         return file;
     } else if (get(settings).BACKEND === 'forgejo') {
         //TODO

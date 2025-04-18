@@ -172,17 +172,7 @@ export const downloadBinaryFileGithub = async (path: string) => {
         }
     );
 
-    console.log(req);
-
-    let download = await makeAPIRequest(req['download_url'],'GET',
-        {
-            Authorization: `Bearer ` + get(token),
-            'Content-Type': 'application/json',
-            'X-GitHub-Api-Version': '2022-11-28',
-            Accept: 'application/vnd.github+json'
-        });
-
-    return download.blob();
+    return req['download_url'];
 
 };
 

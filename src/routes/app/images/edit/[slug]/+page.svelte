@@ -18,6 +18,7 @@
 	let preview: string | undefined | null = $state("");
 	let deleteCounter = 0;
 	let confirmed = false;
+	let display = $state('');
 
 	async function submitThis() {
 		var formData = new FormData(
@@ -90,8 +91,14 @@
 
 <h2>{m.edit_image()} - {data.image.title}</h2>
 
+<h3>Reupload Image</h3>
+{#key display}
 <ReuploadImage image={data.image} />
+{/key}
 
+<hr>
+
+<h3>Data</h3>
 <div style="display: flex; justify-content: space-between;">
 	<div style="width: 100%">
 		<form action="javascript:void(0);" id="imageEdit" enctype="multipart/form-data">
