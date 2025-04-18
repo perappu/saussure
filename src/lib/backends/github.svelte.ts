@@ -3,7 +3,7 @@ import { get } from 'svelte/store';
 import { makeAPIRequest, makeGraphQLRequest } from './requests.svelte';
 import matter from 'gray-matter';
 import type { Character, Image } from '$lib/types';
-import { settings, token } from '$lib/stores';
+import { characters, settings, token } from '$lib/stores';
 
 /**
  * Fetch characters using the Github backend
@@ -99,10 +99,17 @@ export const fetchImagesGithub = async () => {
 
             const { title, tags, character, file, ...fields } = parsed.data;
 
+            //get the name of the character for UX purposes
+            let characterName = get(characters).find(
+                (c) => c.filename == character
+            )?.name;
+            console.log(characterName);
+
             imgs.push({
                 title: title,
                 tags: tags,
                 character: character,
+                characterName: characterName,
                 fields: fields,
                 filename: file,
                 contents: parsed.content,
@@ -141,6 +148,42 @@ export const makeRequestGithub = async (
             Accept: 'application/vnd.github+json'
         }
     );
+};
+
+/**
+ * Download a binary file using the Github backend
+ *
+ * @returns JSON api response
+ */
+export const downloadBinaryFileGithub = async (path: string) => {
+
+    let req = await makeAPIRequest(
+        getBaseUrl() +
+            get(settings).OWNER_NAME +
+            '/' +
+            get(settings).REPO_NAME + '/contents/' +
+            path,
+        'GET',
+        {
+            Authorization: `Bearer ` + get(token),
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28',
+            Accept: 'application/vnd.github+json'
+        }
+    );
+
+    console.log(req);
+
+    let download = await makeAPIRequest(req['download_url'],'GET',
+        {
+            Authorization: `Bearer ` + get(token),
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28',
+            Accept: 'application/vnd.github+json'
+        });
+
+    return download.blob();
+
 };
 
 /**

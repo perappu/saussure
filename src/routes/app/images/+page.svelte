@@ -15,13 +15,23 @@
             order = 1;
         }
         
-        characters.set(get(characters).sort((a, b) => { 
-            if (a.name > b.name) {
+        images.set(get(images).sort((a, b) => { 
+            //sort by character name first
+            if (a.characterName > b.characterName) {
                 return 1 * multiplier;
             }
-            if (a.name < b.name) {
+            if (a.characterName < b.characterName) {
                 return -1 * multiplier;
             } 
+
+            //sort by title second
+            if (a.title > b.title) {
+                return 1 * multiplier;
+            }
+            if (a.title < b.title) {
+                return -1 * multiplier;
+            } 
+
             return 0;
         }));
     }

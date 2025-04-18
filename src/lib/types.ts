@@ -37,9 +37,11 @@ export interface Image {
     title: string;
     tags: any;
     character: string;
+    characterName: string;
     fields: {
         [key: string]: any;
     };
     contents: string;
+    base64?: string;
     sha?: string;
 }

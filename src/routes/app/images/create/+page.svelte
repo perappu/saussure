@@ -37,7 +37,7 @@
             },
             duration: 10000,
         });
-        goto("/images");
+        goto("/app/images");
     }
 
     beforeNavigate(({ cancel }) => {
