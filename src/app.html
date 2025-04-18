@@ -1,39 +1,49 @@
 <!doctype html>
 <html lang="%paraglide.lang%">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-	<meta charset="utf-8" />
-	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	
-	<link id="watercss" rel="stylesheet" href="">
+        <link id="watercss" rel="stylesheet" href="" />
 
-	<!--handling this outside of svelte to avoid flashing a white screen every time we refresh the page-->
-	<script>
-		let styleUrl = "";
+        <!--handling this outside of svelte to avoid flashing a white screen every time we refresh the page-->
+        <script>
+            let styleUrl = '';
 
-		if(localStorage.getItem("SETTINGS") && JSON.parse(localStorage.getItem("SETTINGS")).THEME) {
-			if(JSON.parse(localStorage.getItem("SETTINGS")).THEME == 'light') {
-				styleUrl = "https://cdn.jsdelivr.net/npm/water.css@2/out/light.css";
-			} else {
-				styleUrl = "https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css";
-			}
-		} else {
-				styleUrl = "https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css";
-		}
+            if (
+                localStorage.getItem('SETTINGS') &&
+                JSON.parse(localStorage.getItem('SETTINGS')).THEME
+            ) {
+                if (
+                    JSON.parse(localStorage.getItem('SETTINGS')).THEME ==
+                    'light'
+                ) {
+                    styleUrl =
+                        'https://cdn.jsdelivr.net/npm/water.css@2/out/light.css';
+                } else {
+                    styleUrl =
+                        'https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css';
+                }
+            } else {
+                styleUrl =
+                    'https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css';
+            }
 
-		document.getElementById("watercss").setAttribute('href', styleUrl);
-	</script>
+            document.getElementById('watercss').setAttribute('href', styleUrl);
+        </script>
 
-	%sveltekit.head%
-	<link rel="stylesheet" id="shared" href="/shared.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.39.1/ace.min.js" integrity="sha512-WgH9t1qfGMsgkGm6j8zrhj8UHqry1q+guPAJPGqIeWAVjs9/JsSUwAzdOLGvckuF+cbGie2XUYEKhCNybk5dTg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-</head>
+        %sveltekit.head%
+        <link rel="stylesheet" id="shared" href="/shared.css" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.39.1/ace.min.js"
+            integrity="sha512-WgH9t1qfGMsgkGm6j8zrhj8UHqry1q+guPAJPGqIeWAVjs9/JsSUwAzdOLGvckuF+cbGie2XUYEKhCNybk5dTg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+    </head>
 
-<body data-sveltekit-preload-data="hover">
-	<div class="container" style="display: contents">
-		%sveltekit.body%
-	</div>
-</body>
-
+    <body data-sveltekit-preload-data="hover">
+        <div class="container" style="display: contents">%sveltekit.body%</div>
+    </body>
 </html>

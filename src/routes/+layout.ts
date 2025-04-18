@@ -6,8 +6,7 @@ import { locale, settings } from '$lib/stores';
 export const ssr = false;
 
 export const load: LayoutLoad = async () => {
-
-    if(get(settings).LANGUAGE) {
+    if (get(settings).LANGUAGE) {
         try {
             setLocale(get(locale) as 'en' | 'es' | 'de');
         } catch {

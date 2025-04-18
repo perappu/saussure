@@ -18,7 +18,7 @@ export interface Settings {
     IMAGE_DIRECTORY: string;
     LITERATURE_DIRECTORY: string;
     MEDIA_PATH: string;
-};
+}
 
 export interface Character {
     name: any;
@@ -30,7 +30,7 @@ export interface Character {
     filename: any;
     contents: string;
     sha: any;
-};
+}
 
 export interface Image {
     filename: string;

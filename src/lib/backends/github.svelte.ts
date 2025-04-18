@@ -1,37 +1,41 @@
-import { getBaseUrl } from "$lib/config/directories";
-import { get } from "svelte/store";
-import { makeAPIRequest, makeGraphQLRequest } from "./requests.svelte";
-import matter from "gray-matter";
-import type { Character, Image } from "$lib/types";
-import { settings, token } from "$lib/stores";
+import { getBaseUrl } from '$lib/config/directories';
+import { get } from 'svelte/store';
+import { makeAPIRequest, makeGraphQLRequest } from './requests.svelte';
+import matter from 'gray-matter';
+import type { Character, Image } from '$lib/types';
+import { settings, token } from '$lib/stores';
 
 /**
  * Fetch characters using the Github backend
- * 
+ *
  * @returns JSON of the character files
  */
 export const fetchCharactersGithub = async () => {
-
     try {
-        let request = await downloadFilesGithub(get(settings).CHARACTER_DIRECTORY);
+        let request = await downloadFilesGithub(
+            get(settings).CHARACTER_DIRECTORY
+        );
 
         // todo: simplify this logic
-        var files = request['data']['repository']['object']['entries'].map((file: any) => {
-            return {
-                name: file.name,
-                text: file.object.text
-            };
-        }).filter((file: any) => file !== null);
+        var files = request['data']['repository']['object']['entries']
+            .map((file: any) => {
+                return {
+                    name: file.name,
+                    text: file.object.text
+                };
+            })
+            .filter((file: any) => file !== null);
 
-        var validFiles = files.map((file: any) => {
-            //todo: support non-md file extensions
-            return file.name.endsWith(".md") ? file : null;
-        }).filter((file: any) => file !== null);
+        var validFiles = files
+            .map((file: any) => {
+                //todo: support non-md file extensions
+                return file.name.endsWith('.md') ? file : null;
+            })
+            .filter((file: any) => file !== null);
 
         var chars = <Character[]>[];
 
         for (const file of validFiles) {
-
             let parsed = matter(file.text);
 
             const { name, tags, category, ...fields } = parsed.data;
@@ -51,39 +55,46 @@ export const fetchCharactersGithub = async () => {
     } catch (ex: any) {
         throw new Error("Couldn't fetch characters", { cause: ex });
     }
-}
+};
 
 /**
  * Fetch images using the Github backend
- * 
+ *
  * @returns JSON of the character files
  */
 export const fetchImagesGithub = async () => {
     try {
         try {
-            let request = await downloadFilesGithub(get(settings).IMAGE_DIRECTORY);
+            let request = await downloadFilesGithub(
+                get(settings).IMAGE_DIRECTORY
+            );
 
             // todo: simplify this logic
-            var files = request['data']['repository']['object']['entries'].map((file: any) => {
-                return {
-                    name: file.name,
-                    text: file.object.text
-                };
-            }).filter((file: any) => file !== null);
+            var files = request['data']['repository']['object']['entries']
+                .map((file: any) => {
+                    return {
+                        name: file.name,
+                        text: file.object.text
+                    };
+                })
+                .filter((file: any) => file !== null);
         } catch (ex: any) {
-            console.log("Could not find images in response -- directory either nonexistent or empty")
+            console.log(
+                'Could not find images in response -- directory either nonexistent or empty'
+            );
             return [];
         }
 
-        var validFiles = files.map((file: any) => {
-            //todo: support non-md file extensions? we may just force everything to markdown
-            return file.name.endsWith(".md") ? file : null;
-        }).filter((file: any) => file !== null);
+        var validFiles = files
+            .map((file: any) => {
+                //todo: support non-md file extensions? we may just force everything to markdown
+                return file.name.endsWith('.md') ? file : null;
+            })
+            .filter((file: any) => file !== null);
 
         var imgs = <Image[]>[];
 
         for (const imgFile of validFiles) {
-
             let parsed = matter(imgFile.text);
 
             const { title, tags, character, file, ...fields } = parsed.data;
@@ -103,59 +114,85 @@ export const fetchImagesGithub = async () => {
     } catch (ex: any) {
         throw new Error("Couldn't fetch images", { cause: ex });
     }
-}
+};
 
 /**
  * Make a request using the Github backend
- * 
+ *
  * @returns JSON api response
  */
-export const makeRequestGithub = async (directory: string, method: string, data: any = null) => {
-
+export const makeRequestGithub = async (
+    directory: string,
+    method: string,
+    data: any = null
+) => {
     return await makeAPIRequest(
-        getBaseUrl() + get(settings).OWNER_NAME + '/' + get(settings).REPO_NAME + '/contents/' + directory,
+        getBaseUrl() +
+            get(settings).OWNER_NAME +
+            '/' +
+            get(settings).REPO_NAME +
+            '/contents/' +
+            directory,
         'GET',
         {
-            'Authorization': `Bearer ` + get(token),
+            Authorization: `Bearer ` + get(token),
             'Content-Type': 'application/json',
             'X-GitHub-Api-Version': '2022-11-28',
-            'Accept': 'application/vnd.github+json'
+            Accept: 'application/vnd.github+json'
         }
     );
-
-}
+};
 
 /**
  * Download a file using the Github backend
- * 
+ *
  * @returns JSON api response
  */
 export const downloadFileGithub = async (path: string) => {
-
-    var query = `query {
-                    repository(name: "` + get(settings).REPO_NAME + `", owner: "` + get(settings).OWNER_NAME + `" ) {
-                        object(expression: "` + get(settings).BRANCH + `:` + path + `") {
+    var query =
+        `query {
+                    repository(name: "` +
+        get(settings).REPO_NAME +
+        `", owner: "` +
+        get(settings).OWNER_NAME +
+        `" ) {
+                        object(expression: "` +
+        get(settings).BRANCH +
+        `:` +
+        path +
+        `") {
                         ... on Blob {
                             text
                 }}}}`;
 
-    return await makeGraphQLRequest(getBaseUrl(true),
+    return await makeGraphQLRequest(
+        getBaseUrl(true),
         {
-            'Authorization': `token ` + get(token),
+            Authorization: `token ` + get(token),
             'Content-Type': 'application/json'
-        }, query);
-}
+        },
+        query
+    );
+};
 
 /**
  * Download all files in a directory using the Github backend
- * 
+ *
  * @returns JSON api response
  */
 export const downloadFilesGithub = async (path: string) => {
-
-    var query = `query {
-                    repository(name: "` + get(settings).REPO_NAME + `", owner: "` + get(settings).OWNER_NAME + `" ) {
-                        object(expression: "` + get(settings).BRANCH + `:` + path + `") {
+    var query =
+        `query {
+                    repository(name: "` +
+        get(settings).REPO_NAME +
+        `", owner: "` +
+        get(settings).OWNER_NAME +
+        `" ) {
+                        object(expression: "` +
+        get(settings).BRANCH +
+        `:` +
+        path +
+        `") {
                         ... on Tree {
                           entries {
                             name
@@ -164,26 +201,39 @@ export const downloadFilesGithub = async (path: string) => {
                                 text
                               }}}}}}}`;
 
-    return await makeGraphQLRequest(getBaseUrl(true),
+    return await makeGraphQLRequest(
+        getBaseUrl(true),
         {
-            'Authorization': `token ` + get(token),
+            Authorization: `token ` + get(token),
             'Content-Type': 'application/json'
-        }, query);
-}
+        },
+        query
+    );
+};
 
 /**
  * Put a file using the Github backend
- * 
+ *
  * @param directory The target directory
  * @param data The body of the request
  * @param addition Whether or not this is an addition (true) or a deletion (false)
  * @returns JSON api response
  */
-export const putFileGithub = async (directory: string, data: any = null, addition: boolean = true) => {
-
+export const putFileGithub = async (
+    directory: string,
+    data: any = null,
+    addition: boolean = true
+) => {
     //first we get the oid because nothing can be easy
-    var query = `{ repository(name: "` + get(settings).REPO_NAME + `", owner: "` + get(settings).OWNER_NAME + `") {
-                    ref(qualifiedName: "refs/heads/` + get(settings).BRANCH + `") {
+    var query =
+        `{ repository(name: "` +
+        get(settings).REPO_NAME +
+        `", owner: "` +
+        get(settings).OWNER_NAME +
+        `") {
+                    ref(qualifiedName: "refs/heads/` +
+        get(settings).BRANCH +
+        `") {
                         name
                         target {
                             ... on Commit {
@@ -193,14 +243,17 @@ export const putFileGithub = async (directory: string, data: any = null, additio
                 }}}}}}}`;
 
     var headers = {
-        'Authorization': `token ` + get(token),
+        Authorization: `token ` + get(token),
         'Content-Type': 'application/json'
     };
 
     var response = await makeGraphQLRequest(getBaseUrl(true), headers, query);
 
     //there has GOT to be a better way to do this
-    var oid = response['data']['repository']['ref']['target']['history']['nodes'][0]['oid'];
+    var oid =
+        response['data']['repository']['ref']['target']['history']['nodes'][0][
+            'oid'
+        ];
 
     var fileChanges;
     if (addition == true) {
@@ -228,7 +281,8 @@ export const putFileGithub = async (directory: string, data: any = null, additio
     let variables = {
         input: {
             branch: {
-                repositoryNameWithOwner: get(settings).OWNER_NAME + '/' + get(settings).REPO_NAME,
+                repositoryNameWithOwner:
+                    get(settings).OWNER_NAME + '/' + get(settings).REPO_NAME,
                 branchName: get(settings).BRANCH
             },
             message: {
@@ -239,11 +293,15 @@ export const putFileGithub = async (directory: string, data: any = null, additio
         }
     };
 
-    response = await makeGraphQLRequest(getBaseUrl(true), headers, query, variables);
+    response = await makeGraphQLRequest(
+        getBaseUrl(true),
+        headers,
+        query,
+        variables
+    );
 
     //log the fact we sent the file in the console
     console.log(response);
 
     return response;
-
-}
+};
