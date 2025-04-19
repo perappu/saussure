@@ -31,7 +31,7 @@
             },
             duration: 10000
         });
-        goto("/characters");
+        goto("/app/characters");
     }
 
     beforeNavigate(({ cancel }) => {

@@ -61,7 +61,7 @@
 				},
 			});
 			await invalidateAll();
-			goto("/app/literatures");
+			goto("/app/images");
 		}
 	}
 

@@ -64,7 +64,7 @@
 				},
 			});
 			await invalidateAll();
-			goto("/characters");
+			goto("/app/characters");
 		}
 	}
 

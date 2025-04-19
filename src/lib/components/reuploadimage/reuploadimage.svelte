@@ -30,7 +30,7 @@
 		);
 		var result = await reuploadImage(image.filename, formData);
 		//todo: give user feedback that the file has been saved
-		toast.push(m.toast_edit_image(), {
+		toast.push(m.toast_reupload_image(), {
 			theme: {
 				"--toastColor": "mintcream",
 				"--toastBackground": "rgba(62, 168, 106,0.9)",
