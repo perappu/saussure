@@ -7,6 +7,7 @@ import {
     renderNunjucks
 } from './renderers.svelte';
 import { settings } from '$lib/stores';
+import { error } from '@sveltejs/kit';
 
 /**
  * Fetch the character layouts from the API
@@ -24,15 +25,22 @@ export const fetchLayout = async (childLayout: string | null = null) => {
 
         let layouts = res['data']['repository']['object']['entries'];
 
-        return {
-            baseLayout: layouts.find(
-                (obj: any) => obj['name'] === get(settings).BASE_LAYOUT
-            ).object.text,
-            childLayout: childLayout
-                ? layouts.find((obj: any) => obj['name'] === childLayout).object
-                      .text
-                : null
-        };
+        try {
+            return {
+                baseLayout: layouts.find(
+                    (obj: any) => obj['name'] === get(settings).BASE_LAYOUT
+                ).object.text,
+                childLayout: childLayout
+                    ? layouts.find((obj: any) => obj['name'] === childLayout)
+                          .object.text
+                    : null
+            };
+        } catch (ex) {
+            error(
+                404,
+                'Layout could not be loaded. Check if the path is valid in your settings.'
+            );
+        }
     } else if (get(settings).BACKEND === 'forgejo') {
         //TODO
     }

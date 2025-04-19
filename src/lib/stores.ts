@@ -1,4 +1,4 @@
-import type { Character, Settings } from '$lib/types';
+import type { Character, Literature, Settings } from '$lib/types';
 import { writable } from 'svelte/store';
 import type { Image } from '$lib/types';
 import { persisted } from 'svelte-persisted-store';
@@ -11,3 +11,4 @@ export const token = writable('');
 
 export const characters = writable([] as Character[]);
 export const images = writable([] as Image[]);
+export const literatures = writable([] as Literature[]);

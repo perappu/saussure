@@ -32,6 +32,19 @@ export interface Character {
     sha: any;
 }
 
+export interface Literature {
+    filename: string;
+    title: any;
+    tags: any;
+    character: string;
+    characterName: string;
+    fields: {
+        [key: string]: any;
+    };
+    contents: string;
+    sha: any;
+}
+
 export interface Image {
     filename: string;
     title: string;

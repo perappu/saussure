@@ -2,42 +2,37 @@
     import { beforeNavigate, goto } from "$app/navigation";
     import { Field, TextEditor } from "$lib/components";
     import { textValue } from "$lib/components/texteditor/texteditor";
-    import { writeImage } from "$lib/data/images.svelte";
+    import { writeCharacter } from "$lib/data/characters.svelte";
+    import { writeLiterature } from "$lib/data/literatures.svelte";
     import { m } from "$lib/paraglide/messages";
-    import { characters, images } from "$lib/stores";
+    import { characters, literatures } from "$lib/stores";
     import { toast } from "@zerodevx/svelte-toast";
 
     let descriptionEditor: TextEditor | undefined;
     let numFields: any[] = $state([]);
     let confirmed: boolean = false;
 
-    let filename = ($images.length ?? 0) + 1;
+    let filename = ($literatures.length ?? 0) + 1;
 
-    async function submitImage() {
+    async function submitLiterature() {
         let formData = new FormData(
-            document.querySelector("#imageCreate") as HTMLFormElement,
+            document.querySelector("#literatureEdit") as HTMLFormElement,
         );
         formData.append("content", $textValue);
-        let result = await writeImage(
-            filename +
-                "-" +
-                (document.getElementById("image")! as HTMLFormElement).value
-                    .split("\\")
-                    .pop(),
-            formData,
-        );
+        let result = await writeLiterature(filename + ".md", formData);
         confirmed = true;
-        toast.push(m.toast_create_image(), {
+        //todo: give user feedback that the file has been saved
+        toast.push(m.toast_create_literature(), {
             theme: {
                 "--toastColor": "mintcream",
                 "--toastBackground": "rgba(62, 168, 106,0.9)",
                 "--toastBarBackground": "#2F855A",
-                "--toastWidth": "23rem",
-                "--toastContainerLeft": "calc(50vw - 23rem)",
+                "--toastWidth" : "23rem",
+                "--toastContainerLeft" : "calc(50vw - 23rem)"
             },
-            duration: 10000,
+            duration: 10000
         });
-        goto("/app/images");
+        goto("/app/literatures");
     }
 
     beforeNavigate(({ cancel }) => {
@@ -49,7 +44,7 @@
     });
 </script>
 
-<form action="javascript:void(0);" id="imageCreate" enctype="multipart/form-data">
+<form action="javascript:void(0);" id="literatureEdit">
     <input type="hidden" name="sha" />
 
     {m.character()}:
@@ -59,16 +54,6 @@
                 <option value={option.filename}>{option.name}</option>
             {/each}
         </select>
-    </div>
-
-    <div class="form-group">
-        {m.file()}:
-        <input
-            accept="image/png, image/jpeg, image/gif"
-            id="image"
-            name="image"
-            type="file"
-        />
     </div>
 
     <div class="form-group">
@@ -92,7 +77,7 @@
         >{m.add_field()}</button
     >
 
-    {m.description()}:
+    {m.text()}:
     <TextEditor
         contents=""
         selectedTab="tiptap"
@@ -100,6 +85,6 @@
     />
 
     <div style="text-align:right; margin: 5px;">
-        <button onclick={submitImage}>{m.save()}</button>
+        <button onclick={submitLiterature}>{m.save()}</button>
     </div>
 </form>

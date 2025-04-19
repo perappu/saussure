@@ -2,8 +2,11 @@ import { getBaseUrl } from '$lib/config/directories';
 import { get } from 'svelte/store';
 import { makeAPIRequest, makeGraphQLRequest } from './requests.svelte';
 import matter from 'gray-matter';
-import type { Character, Image } from '$lib/types';
+import type { Character, Image, Literature } from '$lib/types';
 import { characters, settings, token } from '$lib/stores';
+import { redirect } from '@sveltejs/kit';
+
+/************ DATA FETCH */
 
 /**
  * Fetch characters using the Github backend
@@ -53,7 +56,12 @@ export const fetchCharactersGithub = async () => {
 
         return chars;
     } catch (ex: any) {
-        throw new Error("Couldn't fetch characters", { cause: ex });
+        //it's really common that the character fetch will fail if we refresh on a weird route like an edit or create
+        //in that case, we just log it in the console and redirect to the main page
+        //maybe we can handle it better in the future
+        console.log("Redirected to /app. Couldn't fetch characters: " + ex);
+        redirect(307, '/app');
+        //throw new Error("Couldn't fetch characters", { cause: ex });
     }
 };
 
@@ -103,7 +111,6 @@ export const fetchImagesGithub = async () => {
             let characterName = get(characters).find(
                 (c) => c.filename == character
             )?.name;
-            console.log(characterName);
 
             imgs.push({
                 title: title,
@@ -122,6 +129,73 @@ export const fetchImagesGithub = async () => {
         throw new Error("Couldn't fetch images", { cause: ex });
     }
 };
+
+/**
+ * Fetch literatures using the Github backend
+ *
+ * @returns JSON of the literature files
+ */
+export const fetchLiteraturesGithub = async () => {
+    try {
+        try {
+            let request = await downloadFilesGithub(
+                get(settings).LITERATURE_DIRECTORY
+            );
+
+            // todo: simplify this logic
+            var files = request['data']['repository']['object']['entries']
+                .map((file: any) => {
+                    return {
+                        name: file.name,
+                        text: file.object.text
+                    };
+                })
+                .filter((file: any) => file !== null);
+        } catch (ex: any) {
+            console.log(
+                'Could not find literatures in response -- directory either nonexistent or empty'
+            );
+            return [];
+        }
+
+        var validFiles = files
+            .map((file: any) => {
+                //todo: support non-md file extensions? we may just force everything to markdown
+                return file.name.endsWith('.md') ? file : null;
+            })
+            .filter((file: any) => file !== null);
+
+        var lits = <Literature[]>[];
+
+        for (const file of validFiles) {
+            let parsed = matter(file.text);
+
+            const { title, tags, character, ...fields } = parsed.data;
+
+            //get the name of the character for UX purposes
+            let characterName = get(characters).find(
+                (c) => c.filename == character
+            )?.name;
+
+            lits.push({
+                title: title,
+                tags: tags,
+                character: character,
+                characterName: characterName,
+                fields: fields,
+                filename: file.name,
+                contents: parsed.content,
+                sha: file.sha
+            });
+        }
+
+        return lits;
+    } catch (ex: any) {
+        throw new Error("Couldn't fetch literatures", { cause: ex });
+    }
+};
+
+/************ REQUESTS */
 
 /**
  * Make a request using the Github backend
@@ -156,12 +230,12 @@ export const makeRequestGithub = async (
  * @returns JSON api response
  */
 export const downloadBinaryFileGithub = async (path: string) => {
-
     let req = await makeAPIRequest(
         getBaseUrl() +
             get(settings).OWNER_NAME +
             '/' +
-            get(settings).REPO_NAME + '/contents/' +
+            get(settings).REPO_NAME +
+            '/contents/' +
             path,
         'GET',
         {
@@ -173,7 +247,6 @@ export const downloadBinaryFileGithub = async (path: string) => {
     );
 
     return req['download_url'];
-
 };
 
 /**
@@ -263,17 +336,9 @@ export const putFileGithub = async (
         get(settings).REPO_NAME +
         `", owner: "` +
         get(settings).OWNER_NAME +
-        `") {
-                    ref(qualifiedName: "refs/heads/` +
+        `") { ref(qualifiedName: "refs/heads/` +
         get(settings).BRANCH +
-        `") {
-                        name
-                        target {
-                            ... on Commit {
-                            history(first: 1) {
-                                nodes {
-                                oid
-                }}}}}}}`;
+        `") { name target { ... on Commit { history(first: 1) { nodes { oid }}}}}}}`;
 
     var headers = {
         Authorization: `token ` + get(token),

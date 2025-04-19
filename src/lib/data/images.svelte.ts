@@ -1,7 +1,12 @@
 import { get } from 'svelte/store';
 import matter from 'gray-matter';
 import { m } from '$lib/paraglide/messages';
-import { downloadBinaryFileGithub, downloadFileGithub, fetchImagesGithub, putFileGithub } from '$lib/backends/github.svelte';
+import {
+    downloadBinaryFileGithub,
+    downloadFileGithub,
+    fetchImagesGithub,
+    putFileGithub
+} from '$lib/backends/github.svelte';
 import { images, settings } from '$lib/stores';
 
 /**
@@ -43,7 +48,7 @@ export const fetchImageDownload = async (path: string) => {
     } else {
         return [];
     }
-}; 
+};
 
 /**
  * Writes an image file via API based on the user's backend settings
@@ -189,7 +194,7 @@ export const reuploadImage = async (filename: string, formData: FormData) => {
     } catch (ex) {
         throw new Error('Could not put image file', { cause: ex });
     }
-}
+};
 
 /**
  * Convert a File object to its base64 representation
@@ -203,4 +208,4 @@ const fileToBase64 = (blob: Blob | File) =>
         reader.readAsDataURL(blob);
         reader.onload = () => resolve(reader.result);
         reader.onerror = (error) => reject(error);
-});
+    });

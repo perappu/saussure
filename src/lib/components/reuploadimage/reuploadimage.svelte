@@ -41,8 +41,8 @@
 	}
 </script>
 
-<div style="text-align: center">
-<img src="{displayedImage}" alt="Your upload" style="max-height: 500px">
+<div style="text-align: center; height: 250px;">
+<img src="{displayedImage}" alt="Your upload" style="max-height: 250px">
 </div>
 
 <form action="javascript:void(0);" id="reuploadImage" enctype="multipart/form-data">
