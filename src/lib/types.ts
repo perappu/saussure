@@ -28,6 +28,7 @@ export interface Character {
         [key: string]: any;
     };
     filename: any;
+    fileslug: string;
     contents: string;
     sha: any;
 }

@@ -48,7 +48,8 @@ export const fetchCharactersGithub = async () => {
                 tags: tags,
                 category: category,
                 fields: fields,
-                filename: file.name.split(".")[0],
+                filename: file.name,
+                fileslug: file.name.split(".")[0],
                 contents: parsed.content,
                 sha: file.sha
             });
@@ -109,7 +110,7 @@ export const fetchImagesGithub = async () => {
 
             //get the name of the character for UX purposes
             let characterName = get(characters).find(
-                (c) => c.filename == character
+                (c) => c.fileslug == character
             )?.name;
 
             imgs.push({
@@ -174,7 +175,7 @@ export const fetchLiteraturesGithub = async () => {
 
             //get the name of the character for UX purposes
             let characterName = get(characters).find(
-                (c) => c.filename == character
+                (c) => c.fileslug == character
             )?.name;
 
             lits.push({

@@ -100,26 +100,28 @@ export const writeImage = async (filename: string, formData: FormData) => {
         );
     }
 
-    //todo: make this better and not just ripped from SO
-    let imageBlob = (await fileToBase64(data.image)) as string;
+    if (data.image) {
+        //todo: make this better and not just ripped from SO
+        let imageBlob = (await fileToBase64(data.image)) as string;
 
-    //now to do file nonsense
-    try {
-        //create the body of the request
-        var imageBody = {
-            message: m.updated_file() + ' ' + filename,
-            sha: data.sha,
-            content: imageBlob.split(',').pop(),
-            branch: get(settings).BRANCH
-        };
+        //now to do file nonsense
+        try {
+            //create the body of the request
+            var imageBody = {
+                message: m.updated_file() + ' ' + filename,
+                sha: data.sha,
+                content: imageBlob.split(',').pop(),
+                branch: get(settings).BRANCH
+            };
 
-        let result = await putFileGithub(
-            get(settings).MEDIA_PATH + '/' + filename,
-            imageBody
-        );
-        console.log(result);
-    } catch (ex) {
-        throw new Error('Could not put image file', { cause: ex });
+            let result = await putFileGithub(
+                get(settings).MEDIA_PATH + '/' + filename,
+                imageBody
+            );
+            console.log(result);
+        } catch (ex) {
+            throw new Error('Could not put image file', { cause: ex });
+        }
     }
 };
 
