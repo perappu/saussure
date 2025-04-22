@@ -104,9 +104,9 @@
 				<select name="character" autocomplete="off">
 					{#each $characters as option, index}
 						{#if option.filename.localeCompare(data.literature.character) == 0}
-						<option value={option.filename} selected>{option.name}</option>
+						<option value={option.filename.split('.')[0]} selected>{option.name}</option>
 						{:else}
-						<option value={option.filename}>{option.name}</option>
+						<option value={option.filename.split('.')[0]}>{option.name}</option>
 						{/if}
 					{/each}
 				</select>

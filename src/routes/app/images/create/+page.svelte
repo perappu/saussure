@@ -56,7 +56,7 @@
     <div class="characters">
         <select name="character" autocomplete="off">
             {#each $characters as option, index}
-                <option value={option.filename}>{option.name}</option>
+                <option value={option.filename.split('.')[0]}>{option.name}</option>
             {/each}
         </select>
     </div>
