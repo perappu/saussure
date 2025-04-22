@@ -6,6 +6,12 @@ made in SvelteKit!
 Intended to serve as a "headless CMS" to a frontend static website that you
 design.
 
+**If you're new, start by going to [the wiki](https://github.com/perappu/saussure/wiki) and opening up one of the starter guides.**
+
+***
+
+## Technical Stuff:
+
 **Currently only works for GitHub as a backend and 11ty as a pre-configured
 frontend**, but support for Forgejo/Gitea is planned. The SSG used should be
 theoretically agnostic, but I plan to have pre-configured examples for other
@@ -23,10 +29,6 @@ environment variables accordingly. Saussure uses the auto-adapter, so as long as
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fperappu%2Fsaussure)
 
 Or simply download it to your own computer and run it locally with npm.
-
-Start by cloning a repository such as
-[this one](https://github.com/perappu/saussure-11ty), or configure your own.
-Then log in, configure your settings, and you're good to go!
 
 Current rendering engines supported:
 
