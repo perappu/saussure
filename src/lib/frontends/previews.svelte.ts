@@ -1,6 +1,4 @@
-import { get } from 'svelte/store';
 import { renderLayout } from './layouts.svelte';
-import { settings } from '$lib/stores';
 
 /**
  * Render a preview based on the user's frontend settings

@@ -54,18 +54,34 @@ header ul li {
 nav {
     display: flex;
     justify-content: space-between;
+    margin: auto;
     margin-bottom: 10px;
     padding: 10px;
+    max-width: 80%;
+}
+
+nav a {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;;
+}
+
+nav a:active, nav a.active {
+    background-color: var(--background);
+}
+
+nav a:hover {
+    background-color: var(--background);
 }
 
 .danger {
-    background-color: #542f2b;
+    background-color: var(--danger);
 }
 
 .danger:hover {
-    background-color: #321a17;
+    background-color: var(--danger-hover);
 }
 
 .danger:focus {
-    box-shadow: 0 0 0 2px #773a33ab;
+    box-shadow: 0 0 0 2px var(--danger-focus-border);
 }

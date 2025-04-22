@@ -1,10 +1,10 @@
-import { getBaseUrl } from '$lib/config/directories';
 import { get } from 'svelte/store';
 import { makeAPIRequest, makeGraphQLRequest } from './requests.svelte';
 import matter from 'gray-matter';
 import type { Character, Image, Literature } from '$lib/types';
 import { characters, settings, token } from '$lib/stores';
 import { redirect } from '@sveltejs/kit';
+import { getBaseUrl } from '$lib/config';
 
 /************ DATA FETCH */
 

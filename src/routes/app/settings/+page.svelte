@@ -67,8 +67,8 @@
 			bind:value={$settings.THEME}
 			{onchange}
 		>
-			<option value="light">{m.light()}</option>
 			<option value="dark">{m.dark()}</option>
+			<option value="light">{m.light()}</option>
 		</select>
 	</label>
 

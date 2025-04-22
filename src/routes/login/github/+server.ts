@@ -6,7 +6,8 @@ import type { RequestEvent } from '@sveltejs/kit';
 
 export async function GET(event: RequestEvent): Promise<Response> {
     const state = generateState();
-    const url = github.createAuthorizationURL(state, ['repo']);
+    //Change this to 'repo' instead of 'public_repo' to allow access to private repositories
+    const url = github.createAuthorizationURL(state, ['public_repo']);
 
     event.cookies.set('github_oauth_state', state, {
         path: '/',

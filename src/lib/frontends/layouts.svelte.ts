@@ -17,8 +17,6 @@ import { error } from '@sveltejs/kit';
 export const fetchLayout = async (childLayout: string | null = null) => {
     let res;
 
-    console.log(childLayout);
-
     //retrieve layouts from backend
     if (get(settings).BACKEND === 'github') {
         res = await downloadFilesGithub(get(settings).LAYOUT_DIRECTORY);

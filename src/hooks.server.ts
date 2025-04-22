@@ -20,10 +20,6 @@ export const handleToken: Handle = async ({ event, resolve }) => {
         if (!cookieToken) {
             throw redirect(303, '/');
         }
-    } else if (requestedPath.includes('/')) {
-        if (cookieToken) {
-            throw redirect(303, '/app');
-        }
     }
 
     event.locals.token = cookieToken;

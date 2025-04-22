@@ -3,11 +3,11 @@ import matter from 'gray-matter';
 import { m } from '$lib/paraglide/messages';
 import {
     downloadBinaryFileGithub,
-    downloadFileGithub,
     fetchImagesGithub,
     putFileGithub
 } from '$lib/backends/github.svelte';
 import { images, settings } from '$lib/stores';
+import { fileToBase64 } from '$lib/utils';
 
 /**
  * Fetch characters based on the user's backend settings
@@ -195,17 +195,3 @@ export const reuploadImage = async (filename: string, formData: FormData) => {
         throw new Error('Could not put image file', { cause: ex });
     }
 };
-
-/**
- * Convert a File object to its base64 representation
- *
- * @param blob File or Blob object
- * @returns promised base64 blob or file
- */
-const fileToBase64 = (blob: Blob | File) =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-    });

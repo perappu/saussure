@@ -5,7 +5,9 @@
         <link rel="icon" href="%sveltekit.assets%/favicon.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+        <link id="sharedcss" rel="stylesheet" href="" />
         <link id="watercss" rel="stylesheet" href="" />
+        <link id="shared" rel="stylesheet" href="/shared.css" />
 
         <!--handling this outside of svelte to avoid flashing a white screen every time we refresh the page-->
         <script>
@@ -21,20 +23,23 @@
                 ) {
                     styleUrl =
                         'https://cdn.jsdelivr.net/npm/water.css@2/out/light.css';
+                    styleShared = '/shared-light.css';
                 } else {
                     styleUrl =
                         'https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css';
+                    styleShared = '/shared-dark.css';
                 }
             } else {
                 styleUrl =
                     'https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css';
+                styleShared = '/shared-dark.css';
             }
 
             document.getElementById('watercss').setAttribute('href', styleUrl);
+            document.getElementById('sharedcss').setAttribute('href', styleUrl);
         </script>
 
         %sveltekit.head%
-        <link rel="stylesheet" id="shared" href="/shared.css" />
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.39.1/ace.min.js"
             integrity="sha512-WgH9t1qfGMsgkGm6j8zrhj8UHqry1q+guPAJPGqIeWAVjs9/JsSUwAzdOLGvckuF+cbGie2XUYEKhCNybk5dTg=="

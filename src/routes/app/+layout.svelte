@@ -5,6 +5,7 @@
     import { SvelteToast } from "@zerodevx/svelte-toast";
     import { onNavigate } from "$app/navigation";
     import { settings } from "$lib/stores";
+    import NavLink from "$lib/components/navlink/navlink.svelte";
 
     let { children, data } = $props();
 
@@ -28,6 +29,12 @@
                 "href",
                 "https://cdn.jsdelivr.net/npm/water.css@2/out/light.css",
             )}
+        {document
+            .getElementById("sharedcss")!
+            .setAttribute(
+                "href",
+                "/shared-light.css",
+            )}
     {:else}
         {document
             .getElementById("watercss")!
@@ -35,16 +42,22 @@
                 "href",
                 "https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css",
             )}
+        {document
+            .getElementById("sharedcss")!
+            .setAttribute(
+                "href",
+                "/shared-dark.css",
+            )}
     {/if}
 </svelte:head>
 
 <header>
     <nav>
-        <a href="{process.env.BASE_PATH}/app/">{m.home()}</a>
-        <a href="{process.env.BASE_PATH}/app/characters">{m.characters()}</a>
-        <a href="{process.env.BASE_PATH}/app/images">{m.images()}</a>
-        <a href="{process.env.BASE_PATH}/app/literatures">{m.literatures()}</a>
-        <a href="{process.env.BASE_PATH}/app/settings">{m.settings()}</a>
+        <NavLink href="/app/">{m.home()}</NavLink>
+        <NavLink href="/app/characters">{m.characters()}</NavLink>
+        <NavLink href="/app/images">{m.images()}</NavLink>
+        <NavLink href="/app/literatures">{m.literatures()}</NavLink>
+        <NavLink href="/app/settings">{m.settings()}</NavLink>
     </nav>
 </header>
 
