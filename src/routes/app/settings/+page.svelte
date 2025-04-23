@@ -5,6 +5,8 @@
 	import { onMount } from "svelte";
     import { settings } from "$lib/stores";
 
+	let { test } = $props();
+
 	let changes = get(settings);
 
 	function toggleFrontend(is_disabled: boolean) {
@@ -58,6 +60,8 @@
 </script>
 
 <h2>{m.settings()}</h2>
+
+{{ test }}
 
 <div class="settings">
 	<label>
