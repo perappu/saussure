@@ -61,7 +61,7 @@
 
 <h2>{m.settings()}</h2>
 
-{{ test }}
+{ JSON.stringify(test) }
 
 <div class="settings">
 	<label>
