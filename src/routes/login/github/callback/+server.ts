@@ -1,5 +1,5 @@
 // routes/login/github/callback/+server.ts
-import { github } from '$lib/server/auth';
+import { github } from '$lib/config/auth';
 import { error, type RequestEvent } from '@sveltejs/kit';
 import type { OAuth2Tokens } from 'arctic';
 import { ALLOWED_USERS } from '$env/static/private';

@@ -1,6 +1,6 @@
 // routes/login/github/+server.ts
 import { generateState } from 'arctic';
-import { github } from '$lib/server/auth';
+import { github } from '$lib/config/auth';
 
 import type { RequestEvent } from '@sveltejs/kit';
 

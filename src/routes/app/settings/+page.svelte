@@ -54,6 +54,7 @@
 			toggleFrontend(true);
 		}
 	};
+
 </script>
 
 <h2>{m.settings()}</h2>
