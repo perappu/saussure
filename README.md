@@ -6,9 +6,11 @@ made in SvelteKit!
 Intended to serve as a "headless CMS" to a frontend static website that you
 design.
 
-**If you're new, start by going to [the wiki](https://github.com/perappu/saussure/wiki) and opening up one of the starter guides.**
+**If you're new, start by going to
+[the wiki](https://github.com/perappu/saussure/wiki) and opening up one of the
+starter guides.**
 
-***
+---
 
 ## Technical Stuff:
 
@@ -24,7 +26,9 @@ saves your settings in localStorage/cookies.
 Alternatively, if you are connecting to Forgejo/Gitea (or you'd simply like to
 save me some resources), you will need to run your own copy on Vercel, Netlify,
 or another platform that supports serverless functions and configure the
-environment variables accordingly. Saussure uses the auto-adapter, so as long as it is supported by the SvelteKit auto-adapter, then you will not need extra configuration for your platform of choice.
+environment variables accordingly. Saussure uses the auto-adapter, so as long as
+it is supported by the SvelteKit auto-adapter, then you will not need extra
+configuration for your platform of choice.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fperappu%2Fsaussure)
 

@@ -6,6 +6,19 @@ import { settings } from '$lib/stores';
 
 export var siteConfig = {};
 
+export var toastConfig = {
+    success : {
+        '--toastColor': 'mintcream',
+        '--toastBackground': 'rgba(62, 168, 106,0.9)',
+        '--toastBarBackground': '#2F855A'
+    },
+    fail : {
+        '--toastColor': 'mistyrose',
+        '--toastBackground': 'rgba(118, 45, 45, 0.9)',
+        '--toastBarBackground': 'rgba(58, 16, 16, 0.9)'
+    }
+};
+
 /**
  * Get the user's local YAML config file
  *

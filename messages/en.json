@@ -59,6 +59,7 @@
     "toast_reupload_image": "Image has been reuploaded! <br>It may take some time for the API to detect the image has changed.",
     "toast_create_image": "Image has been created! <br> It may take some time for the new file to appear.",
     "toast_delete_image": "Image has been deleted.",
+    "toast_error": "There was an error performing the action. Please check the console log.",
     "toast_edit_literature": "Literature has been saved!",
     "toast_create_literature": "Literature has been created! <br> It may take some time for the new file to appear.",
     "toast_delete_literature": "Literature has been deleted."
