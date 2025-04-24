@@ -1,4 +1,5 @@
 export interface Settings {
+    MEDIA_STORAGE: string;
     THEME: string;
     LANGUAGE: string;
     WYSIWYG: string;

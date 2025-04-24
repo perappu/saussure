@@ -1,7 +1,7 @@
 name: Format
 on:
     push:
-        branches: [ main, master ]
+        branches: [main, master]
 jobs:
     format:
         runs-on: ubuntu-latest
@@ -17,5 +17,5 @@ jobs:
             - name: Commit changes
               uses: stefanzweifel/git-auto-commit-action@v4.1.2
               with:
-                  commit_message: "chore: run format"
+                  commit_message: 'chore: run format'
                   branch: ${{ github.head_ref }}

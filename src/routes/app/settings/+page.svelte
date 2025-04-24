@@ -4,8 +4,7 @@
 	import { m } from "$lib/paraglide/messages";
 	import { onMount } from "svelte";
     import { settings } from "$lib/stores";
-
-	let { test } = $props();
+    import { PUBLIC_S3_URL } from "$env/static/public";
 
 	let changes = get(settings);
 
@@ -60,8 +59,6 @@
 </script>
 
 <h2>{m.settings()}</h2>
-
-{ JSON.stringify(test) }
 
 <div class="settings">
 	<label>
@@ -239,6 +236,24 @@
 	<br />
 
 	<hr />
+	<label>
+		{m.media_storage()}:
+		<select
+			name="media_storage"
+			autocomplete="off"
+			bind:value={$settings.MEDIA_STORAGE}
+			{onchange}
+			
+			style="width: 150px;"
+		>
+			<option value="git">Git</option>
+			{#if PUBLIC_S3_URL}
+			<option value="s3">S3</option>
+			{/if}
+			
+		</select>
+	</label>
+
 	<label>
 		{m.media_path()}:
 		<input

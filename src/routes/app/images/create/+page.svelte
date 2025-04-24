@@ -2,6 +2,7 @@
     import { beforeNavigate, goto } from "$app/navigation";
     import { Field, TextEditor } from "$lib/components";
     import { textValue } from "$lib/components/texteditor/texteditor";
+    import { toastConfig } from "$lib/config";
     import { writeImage } from "$lib/data/images.svelte";
     import { m } from "$lib/paraglide/messages";
     import { characters, images } from "$lib/stores";
@@ -28,13 +29,7 @@
         );
         confirmed = true;
         toast.push(m.toast_create_image(), {
-            theme: {
-                "--toastColor": "mintcream",
-                "--toastBackground": "rgba(62, 168, 106,0.9)",
-                "--toastBarBackground": "#2F855A",
-                "--toastWidth": "23rem",
-                "--toastContainerLeft": "calc(50vw - 23rem)",
-            },
+            theme: toastConfig.success,
             duration: 10000,
         });
         goto("/app/images");

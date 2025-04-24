@@ -29,17 +29,20 @@ export async function GET(event: RequestEvent): Promise<Response> {
         });
     }
 
-	const userResponse = await fetch("https://api.github.com/user", {
-		headers: {
-			Authorization: `Bearer ${tokens.accessToken()}`
-		}
-	});
-	const username = (await userResponse.json()).login;
+    const userResponse = await fetch('https://api.github.com/user', {
+        headers: {
+            Authorization: `Bearer ${tokens.accessToken()}`
+        }
+    });
+    const username = (await userResponse.json()).login;
 
-    if(ALLOWED_USERS != null && !ALLOWED_USERS.includes(username)) {
-        event.cookies.delete('github_oauth_state', {path: '/'});
-        event.cookies.delete('token', {path: '/'});
-        return error(401, 'User is not allowed to log into this instance of Saussure. Try hosting your own! You may also want to revoke access to this application in your GitHub account settings.');
+    if (ALLOWED_USERS && !ALLOWED_USERS.includes(username)) {
+        event.cookies.delete('github_oauth_state', { path: '/' });
+        event.cookies.delete('token', { path: '/' });
+        return error(
+            401,
+            'User is not allowed to log into this instance of Saussure. Try hosting your own! You may also want to revoke access to this application in your GitHub account settings.'
+        );
     }
 
     //Same site is strict so this cookie is not vulnerable to XSS attacks
@@ -53,7 +56,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return new Response(null, {
         status: 302,
         headers: {
-            Location: `/app`
+            location: `/app`
         }
     });
 }

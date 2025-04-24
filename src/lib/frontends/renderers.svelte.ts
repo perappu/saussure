@@ -34,8 +34,8 @@ export const renderNunjucks = (layout: any, data: any) => {
     //handling for the 11ty template filters
     //you can also do this for other filters that you may run into
     //have them substitute for placeholders, or do the actual handling
-    env.addFilter('byCharacter', function(collection, character) {
-        return "";
+    env.addFilter('byCharacter', function (collection, character) {
+        return '';
     });
 
     return env.renderString(content, data);
