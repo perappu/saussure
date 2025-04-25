@@ -7,6 +7,16 @@
 
     //so we can do operations on it
     let order = $state(1);
+    let selectedCharacter = $state('');
+    let filteredImages = $state(get(images));
+
+    function filterCharacter() {
+        if(selectedCharacter) {
+            filteredImages = get(images).filter((image: any) => (image.character + '.md').localeCompare(selectedCharacter) == 0);
+        } else {
+            filteredImages = get(images);
+        }
+    }
 
     function sortName(multiplier: number) {
         if(order === 1) {
@@ -15,7 +25,7 @@
             order = 1;
         }
         
-        images.set(get(images).sort((a, b) => { 
+        filteredImages = filteredImages.sort((a, b) => { 
             //sort by character name first
             if (a.characterName > b.characterName) {
                 return 1 * multiplier;
@@ -33,7 +43,7 @@
             } 
 
             return 0;
-        }));
+        });
     }
 
 </script>
@@ -42,7 +52,21 @@
 
 
 {#if $token != null && $token != ""}
-<div style="text-align: right;">
+<div style="display: flex;justify-content: flex-end;">
+
+    <select
+        name="selectedCharacter"
+        autocomplete="on"
+        bind:value={selectedCharacter}
+        onchange={() => {filterCharacter()}}
+        >
+        <option selected={true} value="">All</option>
+        {#each $characters as character (character.filename)}
+        <option value={character.filename}>{character.name}</option>
+        {/each}
+        
+    </select>
+
     <button onclick={() => {sortName(order)}}>
         {m.sort_alphabetical()}
         {#if order == 1}
@@ -57,7 +81,7 @@
     </div>
     <a href="{process.env.BASE_PATH}/app/images/create"><button style="width: 100%">{m.add_new_image()}</button></a>
     <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
-    {#each $images as image (image.filename)}
+    {#each filteredImages as image (image.filename)}
         <Image {image} />
     {/each}
     </div>
