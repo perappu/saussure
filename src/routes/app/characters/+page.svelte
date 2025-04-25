@@ -45,13 +45,11 @@
         {m.refresh_list()}
     </button>
     </div>
-    
+    <a href="{process.env.BASE_PATH}/app/characters/create"><button style="width: 100%">{m.add_new_character()}</button></a>
     {#each $characters as character (character.filename)}
         <Character {character} />
-        <hr>
     {/each}
-    
-    <a href="{process.env.BASE_PATH}/app/characters/create"><button style="width: 100%">{m.add_new_character()}</button></a>
+
     {:else}
     {m.warn_enter_settings()}
 {/if}

@@ -55,14 +55,12 @@
         {m.refresh_list()}
     </button>
     </div>
-    
+    <a href="{process.env.BASE_PATH}/app/images/create"><button style="width: 100%">{m.add_new_image()}</button></a>
     <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
     {#each $images as image (image.filename)}
         <Image {image} />
     {/each}
     </div>
-    
-    <a href="{process.env.BASE_PATH}/app/images/create"><button style="width: 100%">{m.add_new_image()}</button></a>
     {:else}
     {m.warn_enter_settings()}
 {/if}
