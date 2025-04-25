@@ -7,6 +7,7 @@ import {
 } from '$lib/backends/github.svelte';
 import { images, settings } from '$lib/stores';
 import { deleteMedia, uploadMedia } from './media.svelte';
+import { Base64 } from 'js-base64';
 
 /**
  * Fetch images based on the user's backend settings
@@ -65,7 +66,7 @@ export const writeImage = async (filename: string, formData: FormData) => {
     var body = {
         message: m.updated_file() + ' ' + filename + '.md',
         sha: data.sha,
-        content: window.btoa(blob),
+        content: Base64.encode(blob),
         branch: get(settings).BRANCH
     };
 

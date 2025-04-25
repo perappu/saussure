@@ -6,6 +6,7 @@ import {
 } from '$lib/backends/github.svelte';
 import { m } from '$lib/paraglide/messages';
 import { literatures, settings } from '$lib/stores';
+import { Base64 } from 'js-base64';
 
 /**
  * Fetch characters based on the user's backend settings
@@ -62,7 +63,7 @@ export const writeLiterature = async (filename: string, formData: FormData) => {
     var body = {
         message: m.updated_file() + ' ' + filename,
         sha: data.sha,
-        content: window.btoa(blob),
+        content: Base64.btoa(blob),
         branch: get(settings).BRANCH
     };
 

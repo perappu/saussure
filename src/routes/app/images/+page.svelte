@@ -56,10 +56,11 @@
     </button>
     </div>
     
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
     {#each $images as image (image.filename)}
         <Image {image} />
-        <hr>
     {/each}
+    </div>
     
     <a href="{process.env.BASE_PATH}/app/images/create"><button style="width: 100%">{m.add_new_image()}</button></a>
     {:else}

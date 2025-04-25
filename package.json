@@ -40,6 +40,7 @@
         "gray-matter": "^4.0.3",
         "handlebars": "^4.7.8",
         "htmlfy": "^0.6.2",
+        "js-base64": "^3.7.7",
         "liquidjs": "^10.21.0",
         "markdown-it": "^14.1.0",
         "memfs": "^4.17.0",

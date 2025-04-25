@@ -1,5 +1,5 @@
 import matter from 'gray-matter';
-import { get, writable } from 'svelte/store';
+import { get } from 'svelte/store';
 import {
     fetchCharactersGithub,
     putFileGithub
@@ -7,6 +7,7 @@ import {
 import { m } from '$lib/paraglide/messages';
 import { characters, settings } from '$lib/stores';
 import { deleteMedia, uploadMedia } from './media.svelte';
+import { Base64 } from 'js-base64';
 
 /**
  * Fetch characters based on the user's backend settings
@@ -67,7 +68,7 @@ export const writeCharacter = async (filename: string, formData: FormData) => {
     var body = {
         message: m.updated_file() + ' ' + filename,
         sha: data.sha,
-        content: window.btoa(blob),
+        content: Base64.encode(blob),
         branch: get(settings).BRANCH
     };
 
