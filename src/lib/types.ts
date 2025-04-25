@@ -28,6 +28,7 @@ export interface Character {
     fields: {
         [key: string]: any;
     };
+    icon: string;
     filename: any;
     fileslug: string;
     contents: string;

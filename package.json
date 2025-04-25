@@ -45,6 +45,7 @@
         "memfs": "^4.17.0",
         "minio": "^8.0.5",
         "nunjucks": "^3.2.4",
+        "slugify": "^1.6.6",
         "svelte-persisted-store": "^0.12.0",
         "yaml": "^2.7.0"
     }

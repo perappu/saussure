@@ -41,12 +41,13 @@ export const fetchCharactersGithub = async () => {
         for (const file of validFiles) {
             let parsed = matter(file.text);
 
-            const { name, tags, category, ...fields } = parsed.data;
+            const { name, tags, category, icon, ...fields } = parsed.data;
 
             chars.push({
                 name: name,
                 tags: tags,
                 category: category,
+                icon: icon,
                 fields: fields,
                 filename: file.name,
                 fileslug: file.name.split('.')[0],
@@ -399,8 +400,13 @@ export const putFileGithub = async (
         variables
     );
 
-    //log the fact we sent the file in the console
-    console.log(response);
+    try {
+        //this gets the commit hash from the response and logs it
+        console.log(response.data.createCommitOnBranch.commit.url.split('/')[6]);
 
-    return response;
+        return response.data.createCommitOnBranch.commit.url.split('/')[6];
+    } catch(ex) {
+        console.log(response);
+        throw new Error('Error putting file to github', { cause: ex });
+    }
 };

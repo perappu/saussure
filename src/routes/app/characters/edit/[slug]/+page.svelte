@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { beforeNavigate, goto, invalidateAll } from "$app/navigation";
-	import { Field, TextEditor } from "$lib/components";
+	import { Field, TextEditor, UploadImage } from "$lib/components";
 	import Preview from "$lib/components/preview/preview.svelte";
 	import { textValue } from "$lib/components/texteditor/texteditor";
 	import {
@@ -31,11 +31,7 @@
 		var result = await writeCharacter(data.character.filename, formData);
 		//todo: give user feedback that the file has been saved
 		toast.push(m.toast_edit_character(), {
-			theme: {
-				"--toastColor": "mintcream",
-				"--toastBackground": "rgba(62, 168, 106,0.9)",
-				"--toastBarBackground": "#2F855A",
-			},
+			theme: toastConfig.success,
 		});
 		await invalidateAll();
 	}
@@ -92,8 +88,13 @@
 
 <div style="display: flex; justify-content: space-between;">
 	<div style="width: 50%">
-		<form action="javascript:void(0);" id="characterEdit">
+		
+		<form action="javascript:void(0);" id="characterEdit" enctype="multipart/form-data">
 			<input type="hidden" name="sha" value={data.character.sha} />
+			<input type="hidden" name="icon" value={data.character.icon} />
+
+			{m.icon()}:
+			<UploadImage filename={data.character.icon} path='icons' height={100} />
 
 			<div class="form-group">
 				{m.name()}:

@@ -1,16 +1,12 @@
 <script lang="ts">
     import { beforeNavigate, goto, invalidateAll } from '$app/navigation';
-    import { Field, ReuploadImage, TextEditor } from '$lib/components';
-    import Preview from '$lib/components/preview/preview.svelte';
+    import { Field, UploadImage, TextEditor } from '$lib/components';
     import { textValue } from '$lib/components/texteditor/texteditor';
-    import { renderPreview } from '$lib/frontends/previews.svelte';
     import { m } from '$lib/paraglide/messages';
-    import { onMount } from 'svelte';
     import type { PageProps } from './$types';
     import { toast } from '@zerodevx/svelte-toast';
     import { deleteImage, writeImage } from '$lib/data/images.svelte';
-    import { characters, settings } from '$lib/stores';
-    import { get } from 'svelte/store';
+    import { characters } from '$lib/stores';
     import { toastConfig } from '$lib/config';
 
     let { data }: PageProps = $props();
@@ -61,24 +57,6 @@
         }
     }
 
-    function render() {
-        var formData = new FormData(
-            document.querySelector('#imageEdit') as HTMLFormElement
-        );
-        formData.append('content', $textValue);
-        preview = renderPreview(
-            data.layouts,
-            get(settings).IMAGE_LAYOUT,
-            formData
-        );
-    }
-
-    function onchange() {
-        render();
-    }
-
-    onMount(() => render());
-
     beforeNavigate(({ cancel }) => {
         if (confirmed == false) {
             if (!confirm(m.are_you_sure())) {
@@ -91,11 +69,7 @@
 <h2>{m.edit_image()} - {data.image.title}</h2>
 
 <h3>Reupload Image</h3>
-<ReuploadImage filename={data.image.filename} />
 
-<hr />
-
-<h3>Data</h3>
 <div style="display: flex; justify-content: space-between;">
     <div style="width: 100%">
         <form
@@ -104,6 +78,8 @@
             enctype="multipart/form-data"
         >
             <input type="hidden" name="sha" value={data.image.sha} />
+
+            <UploadImage filename={data.image.filename} path='' />
 
             {m.character()}:
             <div class="characters">
@@ -129,7 +105,6 @@
                     name="title"
                     autocomplete="off"
                     value={data.image.title}
-                    {onchange}
                 />
             </div>
 
@@ -139,7 +114,6 @@
                     name="tags"
                     autocomplete="off"
                     value={data.image.tags}
-                    {onchange}
                 />
             </div>
 
@@ -150,14 +124,12 @@
                     {index}
                     {key}
                     value={data.image.fields[key]}
-                    {onchange}
                 />
             {/each}
             <!--new fields-->
             {#each numFields as f, index}
                 <Field
                     index={index + Object.keys(data.image.fields).length}
-                    {onchange}
                 />
             {/each}
             <button
@@ -172,7 +144,6 @@
                 selectedTab="tiptap"
                 contents={data.image.contents}
                 bind:this={descriptionEditor}
-                onfocusout={() => render()}
             />
 
             <div style="text-align:right; margin: 5px;">

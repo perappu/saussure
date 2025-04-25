@@ -6,6 +6,7 @@ import {
 } from '$lib/backends/github.svelte';
 import { m } from '$lib/paraglide/messages';
 import { characters, settings } from '$lib/stores';
+import { deleteMedia, uploadMedia } from './media.svelte';
 
 /**
  * Fetch characters based on the user's backend settings
@@ -50,10 +51,14 @@ export const writeCharacter = async (filename: string, formData: FormData) => {
         fields[data['key' + i]] = data['value' + i];
     }
 
+    //extension of icon, so people can use gifs or whatever
+    var extension = data.image.size ? data.image.name.split('.').pop() : data.icon.split('.').pop();
+
     //use matter to put the description and front matter into a nice MD file format
     var blob = matter.stringify(data.content, {
         name: data.name,
         tags: data.tags,
+        icon: filename + '.' + extension,
         category: data.category ?? null,
         ...fields
     });
@@ -66,9 +71,12 @@ export const writeCharacter = async (filename: string, formData: FormData) => {
         branch: get(settings).BRANCH
     };
 
+    //capture the commit sha of the putFile so we can use it when uploading the media if needed
+    let res;
+
     //call putFile function based on configured backend
     if (get(settings).BACKEND === 'github') {
-        return await putFileGithub(
+        let res = await putFileGithub(
             get(settings).CHARACTER_DIRECTORY + '/' + filename,
             body
         );
@@ -76,6 +84,11 @@ export const writeCharacter = async (filename: string, formData: FormData) => {
         //TODO
     } else {
         return null;
+    }
+
+    //upload icon if present
+    if (data.image.name) {
+        uploadMedia(filename + '.' + extension, data.image, res, 'icons');
     }
 };
 
@@ -96,9 +109,11 @@ export const deleteCharacter = async (filename: string, formData: FormData) => {
         branch: get(settings).BRANCH
     };
 
+    let res;
+
     //call putFile function based on configured backend
     if (get(settings).BACKEND === 'github') {
-        return await putFileGithub(
+        let res = await putFileGithub(
             get(settings).CHARACTER_DIRECTORY + '/' + filename,
             body,
             false
@@ -108,4 +123,7 @@ export const deleteCharacter = async (filename: string, formData: FormData) => {
     } else {
         return null;
     }
+
+    //delete icon if present
+    deleteMedia(data.icon, res, 'icons');
 };
