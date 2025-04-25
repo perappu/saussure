@@ -63,7 +63,7 @@ export const writeLiterature = async (filename: string, formData: FormData) => {
     var body = {
         message: m.updated_file() + ' ' + filename,
         sha: data.sha,
-        content: Base64.btoa(blob),
+        content: Base64.encode(blob),
         branch: get(settings).BRANCH
     };
 
