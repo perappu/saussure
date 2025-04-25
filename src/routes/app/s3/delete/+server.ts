@@ -1,6 +1,5 @@
 import { deleteObjectS3 } from '$lib/backends/s3.svelte.js';
-import { json } from '@sveltejs/kit';
-import type { RequestHandler } from '../$types';
+import { json, type RequestHandler } from '@sveltejs/kit';
 import { ALLOWED_USERS, S3_ACCESS_KEY } from '$env/static/private';
 
 export const POST: RequestHandler = async ({ request }) => {
