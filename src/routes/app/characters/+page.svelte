@@ -46,10 +46,11 @@
     </button>
     </div>
     <a href="{process.env.BASE_PATH}/app/characters/create"><button style="width: 100%">{m.add_new_character()}</button></a>
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
     {#each $characters as character (character.filename)}
         <Character {character} />
     {/each}
-
+    </div>
     {:else}
     {m.warn_enter_settings()}
 {/if}
