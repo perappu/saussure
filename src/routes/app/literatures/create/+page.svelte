@@ -8,19 +8,21 @@
     import { m } from "$lib/paraglide/messages";
     import { characters, literatures } from "$lib/stores";
     import { toast } from "@zerodevx/svelte-toast";
+    import slugify from "slugify";
 
     let descriptionEditor: TextEditor | undefined;
     let numFields: any[] = $state([]);
     let confirmed: boolean = false;
 
     let filename = ($literatures.length ?? 0) + 1;
+    let title = $state('');
 
     async function submitLiterature() {
         let formData = new FormData(
             document.querySelector("#literatureEdit") as HTMLFormElement,
         );
         formData.append("content", $textValue);
-        let result = await writeLiterature(filename + ".md", formData);
+        let result = await writeLiterature(filename + "-" + slugify(title, '-') + ".md", formData);
         confirmed = true;
         //todo: give user feedback that the file has been saved
         toast.push(m.toast_create_literature(), {
@@ -53,7 +55,7 @@
 
     <div class="form-group">
         {m.title()}:
-        <input name="title" autocomplete="off" />
+        <input name="title" autocomplete="off" bind:value={title} />
     </div>
 
     <div class="form-group">

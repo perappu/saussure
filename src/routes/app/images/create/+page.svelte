@@ -7,6 +7,7 @@
     import { m } from "$lib/paraglide/messages";
     import { characters, images } from "$lib/stores";
     import { toast } from "@zerodevx/svelte-toast";
+    import slugify from "slugify";
 
     let descriptionEditor: TextEditor | undefined;
     let numFields: any[] = $state([]);
@@ -22,9 +23,9 @@
         let result = await writeImage(
             filename +
                 "-" +
-                (document.getElementById("image")! as HTMLFormElement).value
+                slugify((document.getElementById("image")! as HTMLFormElement).value
                     .split("\\")
-                    .pop(),
+                    .pop(), '-'),
             formData,
         );
         confirmed = true;
