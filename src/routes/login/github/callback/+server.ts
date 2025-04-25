@@ -49,7 +49,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     event.cookies.set('token', tokens.accessToken(), {
         path: '/',
         httpOnly: true,
-        maxAge: 60 * 10,
+        maxAge: 24*60*60,
         sameSite: 'strict'
     });
 
