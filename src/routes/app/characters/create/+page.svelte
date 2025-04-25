@@ -21,7 +21,7 @@
             document.querySelector("#characterEdit") as HTMLFormElement,
         );
         formData.append("content", $textValue);
-        let result = await writeCharacter(filename + "-" + slugify(name, '-') + ".md", formData);
+        let result = await writeCharacter(filename + "-" + slugify(name, {replacement: '-', lower: true}) + ".md", formData);
         confirmed = true;
         //todo: give user feedback that the file has been saved
         toast.push(m.toast_create_character(), {

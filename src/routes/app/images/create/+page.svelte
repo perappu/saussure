@@ -25,7 +25,7 @@
                 "-" +
                 slugify((document.getElementById("image")! as HTMLFormElement).value
                     .split("\\")
-                    .pop(), '-'),
+                    .pop(), {replacement: '-', lower: true}),
             formData,
         );
         confirmed = true;
