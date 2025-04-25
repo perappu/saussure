@@ -15,6 +15,7 @@
     import { characters, settings } from "$lib/stores";
     import { get } from "svelte/store";
     import { deleteLiterature, writeLiterature } from "$lib/data/literatures.svelte";
+    import { toastConfig } from "$lib/config";
 
 	let { data }: PageProps = $props();
 	let descriptionEditor: TextEditor | undefined;
@@ -58,11 +59,7 @@
 				formData,
 			);
 			toast.push(m.toast_delete_literature(), {
-				theme: {
-					"--toastColor": "mintcream",
-					"--toastBackground": "rgba(62, 168, 106,0.9)",
-					"--toastBarBackground": "#2F855A",
-				},
+				theme: toastConfig.success,
 			});
 			await invalidateAll();
 			goto("/app/literatures");

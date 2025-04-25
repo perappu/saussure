@@ -2,6 +2,7 @@
     import { beforeNavigate, goto } from "$app/navigation";
     import { Field, TextEditor } from "$lib/components";
     import { textValue } from "$lib/components/texteditor/texteditor";
+    import { toastConfig } from "$lib/config";
     import { writeCharacter } from "$lib/data/characters.svelte";
     import { m } from "$lib/paraglide/messages";
     import { characters } from "$lib/stores";
@@ -22,13 +23,7 @@
         confirmed = true;
         //todo: give user feedback that the file has been saved
         toast.push(m.toast_create_character(), {
-            theme: {
-                "--toastColor": "mintcream",
-                "--toastBackground": "rgba(62, 168, 106,0.9)",
-                "--toastBarBackground": "#2F855A",
-                "--toastWidth" : "23rem",
-                "--toastContainerLeft" : "calc(50vw - 23rem)"
-            },
+            theme: toastConfig.success,
             duration: 10000
         });
         goto("/app/characters");

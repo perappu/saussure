@@ -49,7 +49,7 @@ export const fetchCharactersGithub = async () => {
                 category: category,
                 fields: fields,
                 filename: file.name,
-                fileslug: file.name.split(".")[0],
+                fileslug: file.name.split('.')[0],
                 contents: parsed.content,
                 sha: file.sha
             });
