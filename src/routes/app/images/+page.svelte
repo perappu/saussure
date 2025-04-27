@@ -97,7 +97,7 @@
         {/each}
     </div>
 
-    <Pagination rows={filteredImages} perPage={10} bind:trimmedRows={trimmedImages} />
+    <Pagination rows={filteredImages} perPage={30} bind:trimmedRows={trimmedImages} />
 
 {:else}
     {m.warn_enter_settings()}
