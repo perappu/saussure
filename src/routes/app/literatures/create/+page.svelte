@@ -9,6 +9,7 @@
     import { characters, literatures } from "$lib/stores";
     import { toast } from "@zerodevx/svelte-toast";
     import slugify from "slugify";
+    import Svelecte from "svelecte";
 
     let descriptionEditor: TextEditor | undefined;
     let numFields: any[] = $state([]);
@@ -16,6 +17,12 @@
 
     let filename = ($literatures.length ?? 0) + 1;
     let title = $state('');
+
+    let characterList: { id: any; name: any; }[] = [];
+    $characters.forEach(c => {
+        characterList.push({id: c.filename.split('.')[0], name: c.name });
+    });
+    let selectedCharacters: any[] = $state([]);
 
     async function submitLiterature() {
         let formData = new FormData(
@@ -46,11 +53,7 @@
 
     {m.character()}:
     <div class="characters">
-        <select name="character" autocomplete="off">
-            {#each $characters as option, index}
-                <option value={option.filename.split('.')[0]}>{option.name}</option>
-            {/each}
-        </select>
+        <Svelecte options={characterList} multiple bind:value={selectedCharacters} />
     </div>
 
     <div class="form-group">

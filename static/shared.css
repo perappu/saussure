@@ -86,3 +86,14 @@ nav a:hover {
 .danger:focus {
     box-shadow: 0 0 0 2px var(--danger-focus-border);
 }
+
+select.select-multiple {
+    color: initial;
+    background-color: none;
+    font-family: inherit;
+    font-size: inherit;
+    margin: none;
+    padding: none;
+    border: none;
+    outline: none;
+}

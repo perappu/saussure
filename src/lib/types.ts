@@ -39,7 +39,7 @@ export interface Literature {
     filename: string;
     title: any;
     tags: any;
-    character: string;
+    character: string[];
     characterName: string;
     fields: {
         [key: string]: any;
@@ -52,7 +52,7 @@ export interface Image {
     filename: string;
     title: string;
     tags: any;
-    character: string;
+    character: string[];
     characterName: string;
     fields: {
         [key: string]: any;

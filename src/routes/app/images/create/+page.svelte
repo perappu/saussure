@@ -1,13 +1,14 @@
 <script lang="ts">
-    import { beforeNavigate, goto } from "$app/navigation";
-    import { Field, TextEditor } from "$lib/components";
-    import { textValue } from "$lib/components/texteditor/texteditor";
-    import { toastConfig } from "$lib/config";
-    import { writeImage } from "$lib/data/images.svelte";
-    import { m } from "$lib/paraglide/messages";
-    import { characters, images } from "$lib/stores";
-    import { toast } from "@zerodevx/svelte-toast";
-    import slugify from "slugify";
+    import { beforeNavigate, goto } from '$app/navigation';
+    import { Field, TextEditor } from '$lib/components';
+    import { textValue } from '$lib/components/texteditor/texteditor';
+    import { toastConfig } from '$lib/config';
+    import { writeImage } from '$lib/data/images.svelte';
+    import { m } from '$lib/paraglide/messages';
+    import { characters, images } from '$lib/stores';
+    import { toast } from '@zerodevx/svelte-toast';
+    import slugify from 'slugify';
+    import Svelecte from 'svelecte';
 
     let descriptionEditor: TextEditor | undefined;
     let numFields: any[] = $state([]);
@@ -15,25 +16,35 @@
 
     let filename = ($images.length ?? 0) + 1;
 
+    let characterList: { id: any; name: any; }[] = [];
+    $characters.forEach(c => {
+        characterList.push({id: c.filename.split('.')[0], name: c.name });
+    });
+    let selectedCharacters: any[] = $state([]);
+
     async function submitImage() {
         let formData = new FormData(
-            document.querySelector("#imageCreate") as HTMLFormElement,
+            document.querySelector('#imageCreate') as HTMLFormElement
         );
-        formData.append("content", $textValue);
+        formData.append('content', $textValue);
+        formData.append('characters', selectedCharacters.toString());
         let result = await writeImage(
             filename +
-                "-" +
-                slugify((document.getElementById("image")! as HTMLFormElement).value
-                    .split("\\")
-                    .pop(), {replacement: '-', lower: true}),
-            formData,
+                '-' +
+                slugify(
+                    (document.getElementById('image')! as HTMLFormElement).value
+                        .split('\\')
+                        .pop(),
+                    { replacement: '-', lower: true }
+                ),
+            formData
         );
         confirmed = true;
         toast.push(m.toast_create_image(), {
             theme: toastConfig.success,
-            duration: 10000,
+            duration: 10000
         });
-        goto("/app/images");
+        goto('/app/images');
     }
 
     beforeNavigate(({ cancel }) => {
@@ -45,16 +56,16 @@
     });
 </script>
 
-<form action="javascript:void(0);" id="imageCreate" enctype="multipart/form-data">
+<form
+    action="javascript:void(0);"
+    id="imageCreate"
+    enctype="multipart/form-data"
+>
     <input type="hidden" name="sha" />
 
     {m.character()}:
     <div class="characters">
-        <select name="character" autocomplete="off">
-            {#each $characters as option, index}
-                <option value={option.filename.split('.')[0]}>{option.name}</option>
-            {/each}
-        </select>
+        <Svelecte options={characterList} multiple bind:value={selectedCharacters} />
     </div>
 
     <div class="form-group">

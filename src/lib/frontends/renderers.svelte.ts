@@ -37,6 +37,9 @@ export const renderNunjucks = (layout: any, data: any) => {
     env.addFilter('byCharacter', function (collection, character) {
         return '';
     });
+    env.addFilter('byTag', function (collection, character) {
+        return '';
+    });
 
     return env.renderString(content, data);
 };

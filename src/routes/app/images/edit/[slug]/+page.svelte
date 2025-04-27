@@ -8,6 +8,7 @@
     import { deleteImage, writeImage } from '$lib/data/images.svelte';
     import { characters } from '$lib/stores';
     import { toastConfig } from '$lib/config';
+    import Svelecte from 'svelecte';
 
     let { data }: PageProps = $props();
     let descriptionEditor: TextEditor | undefined;
@@ -16,15 +17,22 @@
     let deleteCounter = 0;
     let confirmed = false;
 
+    let characterList: { id: any; name: any; }[] = [];
+    $characters.forEach(c => {
+        characterList.push({id: c.filename.split('.')[0], name: c.name });
+    });
+    let selectedCharacters: any[] = $state(data.image.character);
+
     async function submitThis() {
         var formData = new FormData(
             document.querySelector('#imageEdit') as HTMLFormElement
         );
         formData.append('content', $textValue);
+        formData.append('characters', selectedCharacters.toString());
         var result = await writeImage(data.image.filename, formData);
         if (result == true) {
             //todo: give user feedback that the file has been saved
-            toast.push(m.toast_edit_character(), {
+            toast.push(m.toast_edit_image(), {
                 theme: toastConfig.success
             });
         } else {
@@ -83,20 +91,7 @@
 
             {m.character()}:
             <div class="characters">
-                <select name="character" autocomplete="off">
-                    {#each $characters as option, index}
-                        {#if option.filename.localeCompare(data.image.character) == 0}
-                            <option
-                                value={option.filename.split('.')[0]}
-                                selected>{option.name}</option
-                            >
-                        {:else}
-                            <option value={option.filename.split('.')[0]}
-                                >{option.name}</option
-                            >
-                        {/if}
-                    {/each}
-                </select>
+                <Svelecte options={characterList} multiple bind:value={selectedCharacters} />
             </div>
 
             <div class="form-group">

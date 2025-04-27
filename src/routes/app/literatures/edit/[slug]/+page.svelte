@@ -16,6 +16,7 @@
     import { get } from "svelte/store";
     import { deleteLiterature, writeLiterature } from "$lib/data/literatures.svelte";
     import { toastConfig } from "$lib/config";
+    import Svelecte from "svelecte";
 
 	let { data }: PageProps = $props();
 	let descriptionEditor: TextEditor | undefined;
@@ -23,6 +24,12 @@
 	let preview: string | undefined | null = $state("");
 	let deleteCounter = 0;
 	let confirmed = false;
+
+	let characterList: { id: any; name: any; }[] = [];
+    $characters.forEach(c => {
+        characterList.push({id: c.filename.split('.')[0], name: c.name });
+    });
+    let selectedCharacters: any[] = $state(data.literature.character);
 
 	async function submitThis() {
 		var formData = new FormData(
@@ -98,15 +105,7 @@
 
 			{m.character()}:
 			<div class="characters">
-				<select name="character" autocomplete="off">
-					{#each $characters as option, index}
-						{#if option.filename.localeCompare(data.literature.character) == 0}
-						<option value={option.filename.split('.')[0]} selected>{option.name}</option>
-						{:else}
-						<option value={option.filename.split('.')[0]}>{option.name}</option>
-						{/if}
-					{/each}
-				</select>
+				<Svelecte options={characterList} multiple bind:value={selectedCharacters} />
 			</div>
 
 			<div class="form-group">

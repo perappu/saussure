@@ -55,7 +55,7 @@ export const writeImage = async (filename: string, formData: FormData) => {
 
     //use matter to put the description and front matter into a nice MD file format
     var blob = matter.stringify(data.content, {
-        character: data.character,
+        character: data.characters,
         file: filename,
         title: data.title,
         tags: data.tags,

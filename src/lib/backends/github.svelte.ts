@@ -110,14 +110,14 @@ export const fetchImagesGithub = async () => {
             const { title, tags, character, file, ...fields } = parsed.data;
 
             //get the name of the character for UX purposes
-            let characterName = get(characters).find(
-                (c) => c.fileslug == character
-            )?.name;
+            let characterName = get(characters).filter(
+                (c) => character.includes(c.fileslug)
+            )?.map(item => item['name']).toString();
 
             imgs.push({
                 title: title,
                 tags: tags,
-                character: character,
+                character: character.split(','),
                 characterName: characterName,
                 fields: fields,
                 filename: file,
@@ -175,9 +175,9 @@ export const fetchLiteraturesGithub = async () => {
             const { title, tags, character, ...fields } = parsed.data;
 
             //get the name of the character for UX purposes
-            let characterName = get(characters).find(
-                (c) => c.fileslug == character
-            )?.name;
+            let characterName = get(characters).filter(
+                (c) => character.includes(c.fileslug)
+            )?.map(item => item['name']).toString();
 
             lits.push({
                 title: title,
