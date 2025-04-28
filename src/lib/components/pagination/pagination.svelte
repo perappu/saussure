@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     export let rows;
     export let perPage;
     export let trimmedRows;
@@ -59,10 +59,6 @@
 
     .pagination p {
         margin: 0 1rem;
-    }
-
-    .selected {
-        background-color: var(--accent-color);
     }
 
     button {
