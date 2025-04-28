@@ -238,7 +238,7 @@ export const downloadBinaryFileGithub = async (path: string) => {
             '/' +
             get(settings).REPO_NAME +
             '/contents/' +
-            path,
+            path + '?ref=' + get(settings).BRANCH,
         'GET',
         {
             Authorization: `Bearer ` + get(token),
