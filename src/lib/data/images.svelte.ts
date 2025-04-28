@@ -1,6 +1,6 @@
 import { get } from 'svelte/store';
 import matter from 'gray-matter';
-import { m } from '$lib/paraglide/messages';
+import { characters, m } from '$lib/paraglide/messages';
 import {
     fetchImagesGithub,
     putFileGithub
