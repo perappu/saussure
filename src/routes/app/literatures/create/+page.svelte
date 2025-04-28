@@ -29,6 +29,7 @@
             document.querySelector("#literatureEdit") as HTMLFormElement,
         );
         formData.append("content", $textValue);
+        formData.append('characters', selectedCharacters.toString());
         let result = await writeLiterature(filename + "-" + slugify(title, {replacement: '-', lower: true}) + ".md", formData);
         confirmed = true;
         //todo: give user feedback that the file has been saved

@@ -36,6 +36,7 @@
 			document.querySelector("#literatureEdit") as HTMLFormElement,
 		);
 		formData.append("content", $textValue);
+        formData.append('characters', selectedCharacters.toString());
 		var result = await writeLiterature(data.literature.filename, formData);
 		//todo: give user feedback that the file has been saved
 		toast.push(m.toast_edit_literature(), {

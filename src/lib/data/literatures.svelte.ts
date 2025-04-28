@@ -53,7 +53,7 @@ export const writeLiterature = async (filename: string, formData: FormData) => {
 
     //use matter to put the content and front matter into a nice MD file format
     var blob = matter.stringify(data.content, {
-        character: data.character,
+        character: data.characters,
         title: data.title,
         tags: data.tags,
         ...fields
